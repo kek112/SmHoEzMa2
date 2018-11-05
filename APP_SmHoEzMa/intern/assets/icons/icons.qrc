@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icon-smart-home-light-blue-1.png</file>
+        <file alias="MenuImage">router-smart-home-1.jpg</file>
+        <file alias="ArrowDownIcon">baseline-keyboard_arrow_down-24px.png</file>
+        <file alias="ArrowUpIcon">baseline-keyboard_arrow_up-24px.png</file>
+        <file alias="AddIcon">baseline_add_black_48.png</file>
+        <file alias="BackIcon">baseline_arrow_back_black_48.png</file>
+        <file alias="MenuIcon">baseline_menu_black_48.png</file>
+        <file alias="RemoveIcon">baseline_remove_black_48.png</file>
+        <file>marker.png</file>
+        <file alias="ColorSpectrum">2000px-HueScale.png</file>
+        <file alias="DeveloperBoardIcon">baseline_developer_board_black_48.png</file>
+        <file alias="DeviceHubIcon">baseline_device_hub_black_48.png</file>
+        <file alias="InfoIcon">baseline_info_black_48.png</file>
+        <file alias="SettingsIcon">baseline_settings_black_48.png</file>
+    </qresource>
+</RCC>

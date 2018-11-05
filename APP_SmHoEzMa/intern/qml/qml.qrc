@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>MainView.qml</file>
+        <file>MenuBackIcon.qml</file>
+        <file>HamburgerIcon.qml</file>
+        <file>DeviceListView.qml</file>
+        <file>PanelItem.qml</file>
+        <file>Accordion.qml</file>
+        <file>AccordionElement.qml</file>
+        <file>map.qml</file>
+        <file>SlideMenu.qml</file>
+        <file>MenuEntry.qml</file>
+        <file>InfoView.qml</file>
+    </qresource>
+</RCC>
