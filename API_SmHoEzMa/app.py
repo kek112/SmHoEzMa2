@@ -44,6 +44,37 @@ def get_tasks():
     # return saved_data[0].ip
 
 
+#open nodes json and dump everthing to client
+@app.route('/api/alldevices', methods=['GET'])
+def return_all_devices():
+    try:
+        with open('../nodes.json', 'r') as myfile:
+            data = myfile.read().replace('\n', '')
+        return_json = json2obj(data)
+        return jsonify(return_json)
+    except IOError:
+        return json.dumps({'success': False, 'Errorcode': 'File could not be opened'}), 400, {'ContentType': 'application/json'}
+
+
+@app.route('/api/device', methods=['POST'])
+def return_one_devices():
+    data = request.get_json()
+    device_ip = data['Ip']
+    try:
+        with open('../nodes.json', 'r') as myfile:
+            data = myfile.read().replace('\n', '')
+        return_json = json2obj(data)
+        index_of_device=compare_json_data(return_json,)
+        return jsonify(return_json)
+    except IOError:
+        return json.dumps({'success': False, 'Errorcode': 'Please enter valid ip'}), 400, {'ContentType': 'application/json'}
+
+def find_object_by_ip(ip,saved_data):
+    for val in saved_data:
+        if val.ip == ip:
+            return val
+        return False
+
 def compare_json_data(received_data, saved_data):
     counter = 0
     for val in saved_data:
