@@ -44,7 +44,8 @@ def get_tasks():
     # return saved_data[0].ip
 
 
-#open nodes json and dump everthing to client
+# open nodes json and dump everthing to client
+# will return whole list of devices
 @app.route('/api/alldevices', methods=['GET'])
 def return_all_devices():
     try:
@@ -56,7 +57,26 @@ def return_all_devices():
         return json.dumps({'success': False, 'Errorcode': 'File could not be opened'}), 400, {'ContentType': 'application/json'}
 
 
+# return the object of one specific device which is found by the ip
+#{
+#  "Ip": "10.10.10.10"
+#}
 @app.route('/api/device', methods=['POST'])
+def return_one_devices():
+    data = request.get_json()
+    device_ip = data['Ip']
+    try:
+        with open('../nodes.json', 'r') as myfile:
+            data = myfile.read().replace('\n', '')
+        saved_data = json2obj(data)
+        return_json = find_object_by_ip(device_ip, saved_data)
+        return jsonify(return_json)
+    except IOError:
+        return json.dumps({'success': False, 'Errorcode': 'Please enter valid ip'}), 400, {'ContentType': 'application/json'}
+
+
+# just return all the sensor values
+@app.route('/api/sensor', methods=['POST'])
 def return_one_devices():
     data = request.get_json()
     device_ip = data['Ip']

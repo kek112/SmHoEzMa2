@@ -1,0 +1,14 @@
+version '3'
+services:
+  API_Bridge:
+    - build: ./API_Bridge
+      ports:
+      - "5000:5000"
+  API_NodeMCU:
+    - build: ./API_NodeMCU
+      ports:
+      - "5000:5000"
+  API_SmHoEzMa:
+    - build: ./API_SmHoEzMa
+    ports:
+      - "5000:5000"
