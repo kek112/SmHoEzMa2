@@ -1,14 +1,18 @@
-version '3'
+version: '3'
 services:
-  API_Bridge:
-    - build: ./API_Bridge
-      ports:
-      - "5000:5000"
-  API_NodeMCU:
-    - build: ./API_NodeMCU
-      ports:
-      - "5000:5000"
-  API_SmHoEzMa:
-    - build: ./API_SmHoEzMa
+  api_bridge:
+    build: ./API_Bridge
     ports:
-      - "5000:5000"
+      - "5001:5000"
+  api_nodemcu:
+    build: ./API_NodeMCU
+    ports:
+      - "5002:5000"
+  api_smhoezma:
+    build: ./API_SmHoEzMa
+    ports:
+      - "5003:5000"
+  db:
+    image: mysql
+    volumes:
+      - ./data/mysql:/var/lib/mysql
