@@ -13,6 +13,11 @@ services:
     ports:
       - "5003:5000"
   db:
-    image: mysql
+    build: ./mysql
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - .mysql/data/mysql_lib:/var/lib/mysql_lib
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: userpass
+      MYSQL_DATABASE: myimage_db
