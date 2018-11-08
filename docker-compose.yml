@@ -25,13 +25,12 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: smhoezma
       MYSQL_USER: user
       MYSQL_PASSWORD: test
       MYSQL_ROOT_PASSWORD: test
     volumes:
       #- /mysql/startup.sql:/docker-entrypoint-initdb.d
-      - persistent1:/var/lib/mysql
+      - persistent:/var/lib/mysql
     networks:
       - default
 
@@ -47,7 +46,7 @@ services:
       MYSQL_PASSWORD: test
       MYSQL_ROOT_PASSWORD: test
 volumes:
-    persistent1:
+    persistent:
 
 # docker-compose down -v --rmi all
 # docker-compose up -d --force-recreate --build
