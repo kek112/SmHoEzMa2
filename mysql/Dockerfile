@@ -1,3 +1,3 @@
-FROM mysql:5.6
+FROM mysql:latest
 
-ADD sql_init.sql /docker-entrypoint-initdb.d
+ADD startup.sql /docker-entrypoint-initdb.d
