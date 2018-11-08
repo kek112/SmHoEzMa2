@@ -1,3 +1,6 @@
+CREATE DATABASE smhoezma;
+use smhoezma;
+
 CREATE TABLE `Devices` (
 	`ID` DECIMAL NOT NULL AUTO_INCREMENT,
 	`Name` VARCHAR(255) NOT NULL,

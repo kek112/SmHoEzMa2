@@ -4,6 +4,8 @@ services:
     build: ./API_Bridge
     ports:
       - "5001:5000"
+    depends_on:
+      - db
   api_nodemcu:
     build: ./API_NodeMCU
     ports:
@@ -16,10 +18,24 @@ services:
       - "5003:5000"
   db:
     build: ./mysql
+    ports:
+      - "3306:3306"
     volumes:
-      - \\mysql\\data\\lib:/var/lib/mysql
+      - /mysql/data/lib:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: userpass
       MYSQL_DATABASE: myimage_db
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_ARBITRARY: 1
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "80:80"
+    links:
+      # for mysql container
+      - "db:db"
