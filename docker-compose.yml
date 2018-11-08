@@ -8,6 +8,8 @@ services:
     build: ./API_NodeMCU
     ports:
       - "5002:5000"
+    links:
+      - db
   api_smhoezma:
     build: ./API_SmHoEzMa
     ports:
@@ -15,7 +17,7 @@ services:
   db:
     build: ./mysql
     volumes:
-      - .mysql/data/mysql_lib:/var/lib/mysql_lib
+      - \\mysql\\data\\lib:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_USER: dbuser
