@@ -4,33 +4,29 @@ services:
     build: ./API_Bridge
     ports:
       - "5001:5000"
-    links:
-      - db
+
   api_nodemcu:
     build: ./API_NodeMCU
     ports:
       - "5002:5000"
-    links:
-      - db
+
   api_smhoezma:
     build: ./API_SmHoEzMa
     ports:
       - "5003:5000"
-    links:
-      - db
+
 
 # DATABASE'
   db:
     image: mysql
-    ports:
-      - "3306:3306"
     environment:
       MYSQL_USER: user
       MYSQL_PASSWORD: test
       MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: smhoezma
     volumes:
-      #- /mysql/startup.sql:/docker-entrypoint-initdb.d
-      - persistent:/var/lib/mysql
+      - ./mysql/sql_scripts:/docker-entrypoint-initdb.d/
+      - mysql_vol:/var/lib/mysql/
     networks:
       - default
 
@@ -46,7 +42,7 @@ services:
       MYSQL_PASSWORD: test
       MYSQL_ROOT_PASSWORD: test
 volumes:
-    persistent:
+    mysql_vol:
 
 # docker-compose down -v --rmi all
 # docker-compose up -d --force-recreate --build
