@@ -1,6 +1,7 @@
 ## Mobile Computing 2 Projekt SmHoEzMa 2.0
 #### Start der Umgebung 
-Um das Projekt zu starten ist es notwendig, dass zum einen Docker sowie Docker-Compose installiert sind. 
+Um das Projekt zu starten ist es notwendig, dass sowohl Docker als auch Docker-Compose installiert sind 
+(Docker-Compose ist in Docker unter Windows enthalten). 
 Nachdem das Projekt gecloned wurde wird im Verzeichnis, welches die docker-compose.yml beinhaltet, "docker-compose up"
 ausgeführt. Empfehlung ist das "docker-compose up -d" ausgeführt wird, damit keine Konsolen Logs ausgegeben werden.
 
