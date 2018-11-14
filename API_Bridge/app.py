@@ -1,14 +1,15 @@
 from flask import Flask
-import requests
 import json
 import mysql.connector
+import re
+import requests
 
 app = Flask(__name__)
 ip = '192.168.137.173'
 port = '8000'
 
 def getMysqlConnection():
-    return mysql.connector.connect(user='testing', host='db', port='3306', password='testing', database='test')
+    return mysql.connector.connect(user='root', host=ip, port='3306', password='test', database='smhoezma')
 
 
 class Payload(object):
@@ -31,20 +32,26 @@ def print_lamp_states():
     string += '</table>'
     return string
 
-"""@app.route('/update_lamp_states', methods=['GET', 'POST'])
+@app.route('/update_lamp_states', methods=['GET', 'POST'])
 def update_lamp_states():
     lamp_states = get_lamp_states()
     mysql_obj = getMysqlConnection()
     cur = mysql_obj.cursor()
-    for lamps in lamp_states:
-        for settings in lamp_states[lamps]['state']:
-            cur.execute('INSERT INTO '+lamp_states[lamps]['state'][settings])
+    for lamp_number in lamp_states:
+        settings = re.sub('u\'', '', str(lamp_states[lamp_number]['state']))
+        settings = re.sub('\'', '', settings)
+        values = "'Lampe "+str(lamp_number)+"', '"+str(ip)+"', '"+str(lamp_number)+"', '"+settings+"'"
+        # TODO: UPDATE when device already in db
+        sql = 'INSERT INTO Devices (Name, IP, GeraeteNummer, Settings) VALUES ('+values+')'
+        print sql
+        cur.execute(sql)
+        mysql_obj.commit()
     mysql_obj.close()
-    return 'OK'
-"""
+    return 'All lamps were inserted!'
+
 def get_lamp_states():
     r = requests.get('http://'+ip+':'+port+'/api/newdeveloper/lights/').json()
-    return r #.text #content
+    return r
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
