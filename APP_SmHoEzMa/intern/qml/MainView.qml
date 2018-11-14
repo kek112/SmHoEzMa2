@@ -27,7 +27,6 @@ ApplicationWindow {
     Material.accent: Material.LightBlue
     Material.foreground: "black"
     Material.primary: Material.Blue
-    Material.background: Material.Grey
 
 
     //Header bar with Menubutton and Title
@@ -50,7 +49,7 @@ ApplicationWindow {
     }
 
     //Main item stack wich can push and pop the UI Items
-    //these are all handeld in the SlideMenu so they are not spread over multiple files
+    //the views to the corresponding button are all handeld in the SlideMenu so they are not spread over multiple files
     StackView {
         id: mainStack
         anchors.fill: parent

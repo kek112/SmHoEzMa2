@@ -11,5 +11,6 @@
         <file>SlideMenu.qml</file>
         <file>MenuEntry.qml</file>
         <file>InfoView.qml</file>
+        <file>SaturationSlider.qml</file>
     </qresource>
 </RCC>
