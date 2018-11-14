@@ -11,7 +11,7 @@ services:
       - 3306:3306
     volumes:
       - ./mysql/sql_scripts:/docker-entrypoint-initdb.d/
-      - mysql_vol:/var/lib/mysql/
+      - mysql_vol_1:/var/lib/mysql/
     networks:
       - default
 
@@ -27,4 +27,4 @@ services:
       MYSQL_ROOT_PASSWORD: test
 
 volumes:
-    mysql_vol:
+    mysql_vol_1:

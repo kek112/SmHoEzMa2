@@ -25,6 +25,8 @@ services:
       MYSQL_PASSWORD: test
       MYSQL_ROOT_PASSWORD: test
       MYSQL_DATABASE: smhoezma
+    ports:
+      - 3306:3306
     volumes:
       - ./mysql/sql_scripts:/docker-entrypoint-initdb.d/
       - mysql_vol:/var/lib/mysql/

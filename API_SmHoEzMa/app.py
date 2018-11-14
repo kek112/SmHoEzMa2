@@ -51,6 +51,7 @@ def return_all_devices():
         mysql_obj= getMysqlConnection()
         cur = mysql_obj.cursor()
         cur.execute(query_get_all_devices)
+        #mysql_obj.close()
 
         row_headers = [x[0] for x in cur.description]  # this will extract row headers
         rv = cur.fetchall()
