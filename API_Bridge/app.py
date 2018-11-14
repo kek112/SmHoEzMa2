@@ -53,5 +53,12 @@ def get_lamp_states():
     r = requests.get('http://'+ip+':'+port+'/api/newdeveloper/lights/').json()
     return r
 
+@app.route('/update_lamp', methods=['GET', 'POST'])
+def update_lamp():
+    settings = {"hue": 34, "on": False, "bri": 56}
+    payload = json.dumps(settings)
+    r = requests.put('http://'+ip+':'+port+'/api/newdeveloper/lights/1/state', data=payload)
+    return "Status-Code: "+str(r.status_code)
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
