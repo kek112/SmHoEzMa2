@@ -5,7 +5,7 @@ CREATE TABLE Devices (
   GeraeteNummer INT NOT NULL,
 	Heat          INT,
 	Light         INT,
-	Colour        INT,
+	Hue           INT,
 	Saturation    INT,
 	Switch        INT,
 	Brightness    INT,
