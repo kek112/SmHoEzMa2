@@ -31,18 +31,6 @@ Item {
     ListModel {
         id: deviceModel
     }
-
-    Button {
-        anchors.bottom: parent.bottom
-        text: "addDebug"
-        onPressed: {
-            createDeviceObjects("AccordionElement.qml", {"Layout.row": devices.length,
-                                "Layout.column": 0,
-                                "color": "red",
-                                "Layout.preferredHeight": 50,
-                                "Layout.preferredWidth": 50})
-        }
-    }
     Button {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
@@ -62,32 +50,35 @@ Item {
 
     function loadDevices() {
         var obj = JSON.parse('
-
-    [
-        {
-            "Name":"Außentemperatur",
-            "Ip":"10.10.10.10",
-            "Settings":[
-                { "Type":"Heat", "Value":15}
-                ]
-        }
-    ]
-');
-
-        /*
-,
-        {
-            "Name":"Flur Lampe",
-            "Ip":"10.10.10.11",
-            "Settings":[
-                { "Type":"Saturation", "Value":100},
-                { "Type":"Brightness", "Value":100}
-                ]
-        }
-          */
-
+        [
+           {
+              "DeviceID":1,
+              "Name":"außentemp",
+              "IP":"test",
+              "GeraeteNummer":2,
+              "Heat":10,
+              "Light":null,
+              "Colour":null,
+              "Saturation":null,
+              "Switch":null,
+              "Brightness":null
+           },
+           {
+              "DeviceID":2,
+              "Name":"Flur Lampe",
+              "IP":"1.2.3.4",
+              "GeraeteNummer":2,
+              "Heat":null,
+              "Light":null,
+              "Hue":1000,
+              "Saturation":100,
+              "Switch":true,
+              "Brightness":100
+           }
+        ]
+        ');
         for (var i = 0; i < obj.length; i++) {
-            deviceModel.append({"elementTitle": obj[i].Name, "content": JSON.stringify(obj[i].Settings)})
+            deviceModel.append({"elementTitle": obj[i].Name, "content": JSON.stringify(obj[i])})
         }
     }
 
