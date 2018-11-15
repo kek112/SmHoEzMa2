@@ -1,5 +1,6 @@
 version: '3'
 services:
+# DATABASE
   db:
     image: mysql
     environment:
@@ -8,23 +9,22 @@ services:
       MYSQL_ROOT_PASSWORD: test
       MYSQL_DATABASE: smhoezma
     ports:
-      - 3306:3306
+    - 3306:3306
     volumes:
-      - ./mysql/sql_scripts:/docker-entrypoint-initdb.d/
-      - mysql_vol_1:/var/lib/mysql/
+    - ./mysql/sql_scripts/:/docker-entrypoint-initdb.d
+    - ./mysql/dev_data:/var/lib/mysql/
     networks:
-      - default
+    - default
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    links:
+
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      links:
       - db
-    ports:
+      ports:
       - 80:80
-    environment:
-      MYSQL_USER: user
-      MYSQL_PASSWORD: test
-      MYSQL_ROOT_PASSWORD: test
+      environment:
+        MYSQL_USER: user
+        MYSQL_PASSWORD: test
+        MYSQL_ROOT_PASSWORD: test
 
-volumes:
-    mysql_vol_1:

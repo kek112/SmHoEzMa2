@@ -28,8 +28,8 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./mysql/sql_scripts:/docker-entrypoint-initdb.d/
-      - mysql_vol:/var/lib/mysql/
+      - ./mysql/sql_scripts/:/docker-entrypoint-initdb.d
+      - ./mysql/data:/var/lib/mysql/
     networks:
       - default
 
@@ -45,8 +45,7 @@ services:
       MYSQL_PASSWORD: test
       MYSQL_ROOT_PASSWORD: test
 
-volumes:
-    mysql_vol:
+
 
 # docker-compose down -v --rmi all
 # docker-compose up -d --force-recreate --build
