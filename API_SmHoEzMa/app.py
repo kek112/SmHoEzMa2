@@ -32,15 +32,15 @@ def return_all_devices():
 
 # return the object of one specific device which is found by the ip
 #{
-#  "Ip": "10.10.10.10"
+#  "IP": "10.10.10.10"
 #}
-@app.route('/api/device', methods=['POST'])
+@app.route('/api/device', methods=['Get','POST'])
 def return_one_devices():
     data = request.get_json()
-    device_ip = data['Ip']
+    device_ip = data['IP']
+    query_specific_device = "SELECT * FROM `Devices` WHERE IP = \"" + device_ip + "\""
     try:
-        with open('../nodes.json', 'r') as myfile:
-            data = myfile.read().replace('\n', '')
+        return send_query_to_db(query_specific_device)
     except IOError:
         return json.dumps({'success': False, 'Errorcode': 'Please enter valid ip'}), 400, {'ContentType': 'application/json'}
 
