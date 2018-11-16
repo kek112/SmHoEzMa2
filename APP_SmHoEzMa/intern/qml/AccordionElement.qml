@@ -117,87 +117,9 @@ Rectangle {
         ]
       */
 
-    //This is function Karls fault because of his ugly json
+    //This is function Karls fault because of his ugly json structure
     //(apparently it was to hard to create a array in the json that only contains the neccesary settings [as i heard it has something to do how the data is stored in the database])
     function createContent() {
-        /*
-    var SettingsSliderString = 'import QtQuick 2.0
-import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.3
-
-Item {
-    property string settingsName: "name"
-    property int sliderFrom: 0
-    property int sliderTo: 255
-    RowLayout {
-        anchors.fill: parent
-        Label {
-            text: settingsName
-        }
-        Slider {
-            id: slider
-            from: sliderFrom
-            to: sliderTo
-        }
-    }
-    function setValue(_value) {
-        slider.value = _value
-    }
-    function getValue() {
-        return slider.value
-    }
-}'
-    var SettingsSensorString = 'import QtQuick 2.0
-import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.3
-
-Item {
-    property string settingsName: "name"
-    property int settingsValue: 0
-    property string settingsUnit: "°C"
-
-    RowLayout {
-        anchors.fill: parent
-        Label {
-            text: settingsName
-        }
-        Label {
-            text: settingsValue + settingsUnit
-        }
-    }
-}'
-
-            case "Saturation":
-                settingsObject = Qt.createQmlObject(SettingsSliderString, contentLayout)
-                settingsObject.Layout.row = i
-                settingsObject.Layout.column = 0
-                settingsObject.settingsName = "Saturation"
-                seetingsObject.setValue(contentObject[i].Value)
-                break;
-            case "Brightness":
-                settingsObject = Qt.createQmlObject(SettingsSliderString, contentLayout)
-                settingsObject.Layout.row = i
-                settingsObject.Layout.column = 0
-                settingsObject.settingsName = "Brightness"
-                seetingsObject.setValue(contentObject[i].Value)
-                break;
-            case "Heat":
-                settingsObject = Qt.createQmlObject(SettingsSliderString, contentLayout)
-                settingsObject.Layout.row = i
-                settingsObject.Layout.column = 0
-                settingsObject.settingsName = "Heat"
-                settingsObject.settingsValue = contentObject[i].Value
-                settingsObject.settingsUnit = "°C"
-                break;
-            case "Light":
-                settingsObject = Qt.createQmlObject(SettingsSliderString, contentLayout)
-                settingsObject.Layout.row = i
-                settingsObject.Layout.column = 0
-                settingsObject.settingsName = "Light"
-                settingsObject.settingsValue = contentObject[i].Value
-                settingsObject.settingsUnit = "Lm"
-                break;
-*/
 
         var contentObject = JSON.parse(contentJson)
         var settingsObject;
@@ -213,9 +135,8 @@ Item {
             //Layout information
             nameObject.Layout.column = 0
             nameObject.Layout.row = itemCounter
-            nameObject.Layout.fillWidth = true
+//            nameObject.Layout.fillWidth = true
             nameObject.Layout.fillHeight = true
-            nameObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
             settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Label {}', contentLayout);
             textString = contentObject.Heat + "°C";
@@ -223,8 +144,9 @@ Item {
             //Layout information
             settingsObject.Layout.column = 1
             settingsObject.Layout.row = itemCounter
-            settingsObject.Layout.fillWidth = true
+//            settingsObject.Layout.fillWidth = true
             settingsObject.Layout.fillHeight = true
+            settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
             itemCounter++
         }
@@ -234,9 +156,8 @@ Item {
             //Layout information
             nameObject.Layout.column = 0
             nameObject.Layout.row = itemCounter
-            nameObject.Layout.fillWidth = true
+//            nameObject.Layout.fillWidth = true
             nameObject.Layout.fillHeight = true
-            nameObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
             settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Label {}', contentLayout);
             textString = contentObject.Light + "L";
@@ -244,8 +165,9 @@ Item {
             //Layout information
             settingsObject.Layout.column = 1
             settingsObject.Layout.row = itemCounter
-            settingsObject.Layout.fillWidth = true
+//            settingsObject.Layout.fillWidth = true
             settingsObject.Layout.fillHeight = true
+            settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
             itemCounter++
         }
@@ -256,17 +178,17 @@ Item {
             //Layout information
             nameObject.Layout.column = 0
             nameObject.Layout.row = itemCounter
-            nameObject.Layout.fillWidth = true
+//            nameObject.Layout.fillWidth = true
             nameObject.Layout.fillHeight = true
-            nameObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
             settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Switch {}', contentLayout);
             settingsObject.checked = contentObject.Switch
             //Layout information
             settingsObject.Layout.column = 1
             settingsObject.Layout.row = itemCounter
-            settingsObject.Layout.fillWidth = true
+//            settingsObject.Layout.fillWidth = true
             settingsObject.Layout.fillHeight = true
+            settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
             itemCounter++
         }
@@ -276,9 +198,8 @@ Item {
             //Layout information
             nameObject.Layout.column = 0
             nameObject.Layout.row = itemCounter
-            nameObject.Layout.fillWidth = true
+//            nameObject.Layout.fillWidth = true
             nameObject.Layout.fillHeight = true
-            nameObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
             settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Slider {}', contentLayout);
             settingsObject.from = 0;
@@ -290,6 +211,7 @@ Item {
             settingsObject.Layout.row = itemCounter
             settingsObject.Layout.fillWidth = true
             settingsObject.Layout.fillHeight = true
+            settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
             itemCounter++
         }
@@ -299,9 +221,8 @@ Item {
             //Layout information
             nameObject.Layout.column = 0
             nameObject.Layout.row = itemCounter
-            nameObject.Layout.fillWidth = true
+//            nameObject.Layout.fillWidth = true
             nameObject.Layout.fillHeight = true
-            nameObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
             settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Slider {}', contentLayout);
             settingsObject.from = 0;
@@ -313,6 +234,7 @@ Item {
             settingsObject.Layout.row = itemCounter
             settingsObject.Layout.fillWidth = true
             settingsObject.Layout.fillHeight = true
+            settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
             itemCounter++
         }
@@ -322,11 +244,10 @@ Item {
             //Layout information
             nameObject.Layout.column = 0
             nameObject.Layout.row = itemCounter
-            nameObject.Layout.fillWidth = true
+//            nameObject.Layout.fillWidth = true
             nameObject.Layout.fillHeight = true
-            nameObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
-            settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Slider {id: control; background: Image{source: "qrc:/ColorSpectrum"; x: control.leftPadding*2; y: control.topPadding; height: control.handle.height; width: control.width - control.leftPadding*2 - control.rightPadding*2}}', contentLayout);
+            settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Slider {id: control; background: Image{source: "qrc:/ColorSpectrum"; x: control.leftPadding*2; anchors.verticalCenter: parent.verticalCenter; height: control.handle.height/2; width: control.width - control.leftPadding*2 - control.rightPadding*2}}', contentLayout);
             settingsObject.from = 0;
             settingsObject.to = 65535;
             settingsObject.stepSize = 1
@@ -336,6 +257,7 @@ Item {
             settingsObject.Layout.row = itemCounter
             settingsObject.Layout.fillWidth = true
             settingsObject.Layout.fillHeight = true
+            settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
             itemCounter++
         }

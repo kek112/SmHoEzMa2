@@ -35,16 +35,28 @@ Item {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         text: "Debug"
-        onPressed: loadDevices()
+        onPressed: {
+            if(deviceModel.count == 0) {
+                loadDevices()
+            }
+            else {
+                deviceModel.clear()
+            }
+        }
     }
 
 
     //functions that create and remove the device views
-    function removeDevice () {
+    function clearDevices () {
         if(devices.length != 0) {
-            var element = devices[devices.length-1]
-            element.destroy()
-            devices.splice(devices.length-1, 1)
+            for(var i = devices.length-1; i <= 0; i++)
+            {
+                var element = devices[i]
+                element.destroy()
+                devices.splice(i, 1)
+            }
+
+
         }
     }
 
