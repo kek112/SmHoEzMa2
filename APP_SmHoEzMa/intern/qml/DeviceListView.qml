@@ -31,41 +31,22 @@ Item {
     ListModel {
         id: deviceModel
     }
-    Button {
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        text: "Debug"
-        onPressed: {
-            if(deviceModel.count == 0) {
-                loadDevices()
-            }
-            else {
-                deviceModel.clear()
-            }
-        }
+    Component.onCompleted: {
+        loadDevices()
     }
 
-
-    //functions that create and remove the device views
-    function clearDevices () {
-        if(devices.length != 0) {
-            for(var i = devices.length-1; i <= 0; i++)
-            {
-                var element = devices[i]
-                element.destroy()
-                devices.splice(i, 1)
-            }
-
-
-        }
-    }
+    //function to load the devices and show them on the ui
+    //it first clears the deviceModel and then loads the devices from the json that gets loaded from the api
+    //TODO: get data from server
 
     function loadDevices() {
+
+        deviceModel.clear()
         var obj = JSON.parse('
         [
            {
               "DeviceID":1,
-              "Name":"außentemp",
+              "Name":"Außen Temperatur",
               "IP":"test",
               "GeraeteNummer":2,
               "Heat":10,

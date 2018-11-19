@@ -34,7 +34,8 @@ Rectangle {
             Layout.fillHeight: true
             Layout.fillWidth: true
             verticalAlignment: Text.AlignVCenter
-            font.pointSize: 10
+            font.pointSize: 12
+            font.bold: true
             text: title
         }
 
@@ -135,7 +136,7 @@ Rectangle {
             //Layout information
             nameObject.Layout.column = 0
             nameObject.Layout.row = itemCounter
-//            nameObject.Layout.fillWidth = true
+            nameObject.Layout.fillWidth = true
             nameObject.Layout.fillHeight = true
 
             settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Label {}', contentLayout);
@@ -156,7 +157,7 @@ Rectangle {
             //Layout information
             nameObject.Layout.column = 0
             nameObject.Layout.row = itemCounter
-//            nameObject.Layout.fillWidth = true
+            nameObject.Layout.fillWidth = true
             nameObject.Layout.fillHeight = true
 
             settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Label {}', contentLayout);

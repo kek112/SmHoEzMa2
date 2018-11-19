@@ -11,10 +11,11 @@ Item {
     //signal which sends the corrseponding item of the pressed button
     //this gets handled in the MainView
     signal menuButtonPressed(var item)
+    signal closeMenu()
 
     //central handling of Button presses
     ButtonGroup {
-        id: menuButtonGroup
+        id: viewButtonGroup
         onClicked: {
             menuButtonPressed(button.stackItem)
         }
@@ -36,7 +37,7 @@ Item {
 
                 Layout.fillWidth: true
 
-                ButtonGroup.group: menuButtonGroup
+                ButtonGroup.group: viewButtonGroup
                 stackItem: DeviceListView {}
             }
             MenuEntry {
@@ -45,7 +46,7 @@ Item {
 
                 Layout.fillWidth: true
 
-                ButtonGroup.group: menuButtonGroup
+                ButtonGroup.group: viewButtonGroup
             }
             MenuEntry {
                 entryText: "Sleep"
@@ -56,12 +57,25 @@ Item {
                 ButtonGroup.group: menuButtonGroup
             }
             MenuEntry {
+                entryText: "Reload"
+                iconSource: "qrc:/DeveloperBoardIcon"
+
+                Layout.fillWidth: true
+
+                onClicked: {
+                    mainViewButton.stackItem.loadDevices();
+                    closeMenu()
+                }
+
+            }
+
+            MenuEntry {
                 entryText: "Info"
                 iconSource: "qrc:/InfoIcon"
 
                 Layout.fillWidth: true
 
-                ButtonGroup.group: menuButtonGroup
+                ButtonGroup.group: viewButtonGroup
                 stackItem: InfoView {}
             }
             Item {

@@ -94,6 +94,9 @@ ApplicationWindow {
             mainStack.push(item)
             menuButton.menuState = "menu" //automatically closes menu
         }
+        onCloseMenu: {
+            menuButton.menuState = "menu"
+        }
     }
 
     //handling back key press
