@@ -54,7 +54,10 @@ Item {
 
                 Layout.fillWidth: true
 
-                ButtonGroup.group: menuButtonGroup
+                onClicked: {
+                    mainViewButton.stackItem.sleepAllDevices();
+                    closeMenu()
+                }
             }
             MenuEntry {
                 entryText: "Reload"

@@ -8,19 +8,12 @@ Item {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        text: "\nSmart Home Easy Maker\n
-SmHoEzMa"
+        text: "\nSmart Home Easy Maker
+SmHoEzMa\n
+Created by:
+Tobias Rieß
+Karl-Erik Kley
+Martin Lesser"
         horizontalAlignment: Text.AlignHCenter
-    }
-    Label {
-        anchors.top: titleLabel.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        text: "\n\nCreated by:\n
-- Tobias Rieß\n
-- Karl-Erik Kley\n
-- Martin Lesser"
-        horizontalAlignment: Text.AlignLeft
     }
 }

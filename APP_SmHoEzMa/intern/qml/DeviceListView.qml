@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 
 Item {
+    id: test
     property var devices: []
     property int currentActiveElement: 0
     property int buttonSize: 48
@@ -13,7 +14,7 @@ Item {
         anchors.fill: parent
         padding: 5
         ListView {
-            id: mainLayout
+            id: mainListView
             anchors.fill: parent
 
             spacing: 5
@@ -40,7 +41,6 @@ Item {
     //TODO: get data from server
 
     function loadDevices() {
-
         deviceModel.clear()
         var obj = JSON.parse('
         [
@@ -65,13 +65,19 @@ Item {
               "Light":null,
               "Hue":1000,
               "Saturation":100,
-              "Switch":true,
+              "Switch":false,
               "Brightness":100
            }
         ]
         ');
         for (var i = 0; i < obj.length; i++) {
             deviceModel.append({"elementTitle": obj[i].Name, "content": JSON.stringify(obj[i])})
+        }
+    }
+    function sleepAllDevices() {
+        for(var i = 0; i < mainListView.count; i++) {
+            mainListView.currentIndex = i
+            mainListView.currentItem.sleep()
         }
     }
 

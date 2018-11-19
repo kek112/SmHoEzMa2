@@ -102,13 +102,16 @@ ApplicationWindow {
     //handling back key press
     //TODO: currently the Key is processed in a child (probably)
     //solutions: forward the KeyEvent or handle it in the corresponding object (this would mean the Key function needs to be written in every object, maybe a EventHandler can be used like in QtC++)
-    Keys.onPressed: {
-        if (event.key == Qt.Key_Back || event.key == Qt.Key_Backspace) {
-            if(menu.state === "open") {
-                menuButton.menuState = "menu" //automatically closes menu
-            }
-            else if (mainStack.depth > 1) {
-                mainStack.pop()
+    Item {
+        focus: true
+        Keys.onPressed: {
+            if (event.key == Qt.Key_Back || event.key == Qt.Key_Backspace) {
+                if(menu.state === "open") {
+                    menuButton.menuState = "menu" //automatically closes menu
+                }
+                else if (mainStack.depth > 1) {
+                    mainStack.pop()
+                }
             }
         }
     }

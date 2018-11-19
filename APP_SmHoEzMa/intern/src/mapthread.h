@@ -10,7 +10,6 @@ class CMapThread : public QObject
 {
     Q_OBJECT
 
-    //TODO: finsh mapThread (when an object gets deleted there is a posibility that the thread trys to access it)
     //whenever a device is added or removed the worker function gets stoped (flag in function) then a copy of the device list is send to the worker and the function gets restarted
 public:
     explicit CMapThread(CDeviceStructure _Devices, QObject *parent = nullptr);

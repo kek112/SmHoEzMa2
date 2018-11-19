@@ -86,7 +86,6 @@ CDeviceView::CDeviceView(CDeviceStructure::Device _device, QWidget *parent)
         m_pMainLayout->addWidget(m_pHueSlider,          2,1);
         m_pMainLayout->addWidget(m_pSwitchWidget,       3,1, Qt::AlignRight);
 
-        //TODO: finish map (add set button & on/off switch)
 //        m_pMainLayout->addWidget(m_pMapWidget,              5,0, 1,2);
 //        m_pMainLayout->addWidget(MapContainer,              5,0, 1,2);
 //        m_pMainLayout->addWidget(m_pMapView,                5,0, 1,2);

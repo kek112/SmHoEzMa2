@@ -12,6 +12,7 @@ Rectangle {
     property string contentJson: ""
 
     property int itemCounter: 0
+    property var switchObject: null
 
     color: "transparent"
     border.color: "black"
@@ -64,7 +65,7 @@ Rectangle {
             Rectangle {
                 id: seperator
                 Layout.preferredHeight: 3
-                Layout.preferredWidth: mainLayout.width - (root.border.width * 2 + 6)
+                Layout.preferredWidth: root.width - (root.border.width * 2 + 6)
                 Layout.alignment: Qt.AlignCenter
                 color: "grey"
                 radius: 3
@@ -120,6 +121,8 @@ Rectangle {
 
     //This is function Karls fault because of his ugly json structure
     //(apparently it was to hard to create a array in the json that only contains the neccesary settings [as i heard it has something to do how the data is stored in the database])
+
+    //TODO: connect settings to send the changes made in app to api
     function createContent() {
 
         var contentObject = JSON.parse(contentJson)
@@ -184,6 +187,7 @@ Rectangle {
 
             settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Switch {}', contentLayout);
             settingsObject.checked = contentObject.Switch
+            switchObject = settingsObject
             //Layout information
             settingsObject.Layout.column = 1
             settingsObject.Layout.row = itemCounter
@@ -303,5 +307,12 @@ Rectangle {
             }
         }
         */
+    }
+
+    function sleep() {
+//        console.log("sleep")
+        if(switchObject != null) {
+            switchObject.checked = false
+        }
     }
 }
