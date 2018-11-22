@@ -81,7 +81,7 @@ Rectangle {
     function updateSize() {
         root.height = border.width * 2 + headerLayout.height
         if(contentItem.visible) {
-            root.height += contentItem.height + itemCounter*20
+            root.height += contentItem.height + itemCounter*25
         }
 //        console.log(contentItemLayout.width + "x" + contentItemLayout.height)
     }
@@ -175,8 +175,7 @@ Rectangle {
 
             itemCounter++
         }
-        if(contentObject.Switch != null)
-        {
+        if(contentObject.Switch != null) {
             nameObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Label {}', contentLayout);
             nameObject.text = "On/Off";
             //Layout information
@@ -252,7 +251,7 @@ Rectangle {
 //            nameObject.Layout.fillWidth = true
             nameObject.Layout.fillHeight = true
 
-            settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Slider {id: control; background: Image{source: "qrc:/ColorSpectrum"; x: control.leftPadding*2; anchors.verticalCenter: parent.verticalCenter; height: control.handle.height/2; width: control.width - control.leftPadding*2 - control.rightPadding*2}}', contentLayout);
+            settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Slider {id: control; background: Item{}Image{source: "qrc:/ColorSpectrum"; x: control.leftPadding*2; anchors.verticalCenter: control.verticalCenter; height: control.handle.height/2; width: control.width - control.leftPadding*2 - control.rightPadding*2}}', contentLayout);
             settingsObject.from = 0;
             settingsObject.to = 65535;
             settingsObject.stepSize = 1
@@ -266,6 +265,28 @@ Rectangle {
 
             itemCounter++
         }
+        if(switchObject != null) {
+            nameObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Label {}', contentLayout);
+            nameObject.text = "Homecoming";
+            //Layout information
+            nameObject.Layout.column = 0
+            nameObject.Layout.row = itemCounter
+//            nameObject.Layout.fillWidth = true
+//            nameObject.Layout.fillHeight = true
+            nameObject.horizontalAlignment = Text.AlignHCenter
+
+            settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Switch {}', contentLayout);
+            settingsObject.checked = false
+            //Layout information
+            settingsObject.Layout.column = 1
+            settingsObject.Layout.row = itemCounter
+//            settingsObject.Layout.fillWidth = true
+            settingsObject.Layout.fillHeight = true
+            settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
+
+            itemCounter++
+        }
+
         /*
           //Code of the old json
         for(var i = 0; i < contentObject.length; i++) {
