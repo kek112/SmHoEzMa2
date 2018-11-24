@@ -38,14 +38,14 @@ def return_all_devices():
 def return_one_devices():
     data = request.get_json()
     device_ip = data['IP']
-    query_specific_device = "SELECT * FROM `Devices` WHERE IP = \"" + device_ip + "\""
+    query_specific_device = "SELECT * FROM `Devices` WHERE IP = \'" + device_ip + "\'"
     try:
         return send_query_to_db(query_specific_device)
     except IOError:
         return json.dumps({'success': False, 'Errorcode': 'Please enter valid ip'}), 400, {'ContentType': 'application/json'}
 
 # just return all the lamps
-@app.route('/api/lamps', methods=['GET'])
+@app.route('/api/lamp', methods=['GET'])
 def return_lamps():
     query_get_lamp = "SELECT * FROM `Devices` WHERE `GeraeteNummer` != 0"
     try:
