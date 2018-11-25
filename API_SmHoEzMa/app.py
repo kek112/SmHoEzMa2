@@ -6,14 +6,6 @@ import mysql.connector
 app = Flask(__name__)
 
 
-#### QUERY SECTION ####
-
-
-
-#### QUERY SECTION ####
-
-
-
 @app.route("/")
 def hello():
     return "Hello World!"
@@ -37,12 +29,12 @@ def return_all_devices():
 @app.route('/api/device', methods=['Get','POST'])
 def return_one_devices():
     data = request.get_json()
-    device_ip = data['IP']
-    query_specific_device = "SELECT * FROM `Devices` WHERE IP = \'" + device_ip + "\'"
+    query_specific_device = "SELECT * FROM `Devices` WHERE IP = \'" + data['IP'] + "\'"
     try:
         return send_query_to_db(query_specific_device)
     except IOError:
         return json.dumps({'success': False, 'Errorcode': 'Please enter valid ip'}), 400, {'ContentType': 'application/json'}
+
 
 # just return all the lamps
 @app.route('/api/lamp', methods=['GET'])
@@ -65,7 +57,7 @@ def return_sensors():
 
 
 def send_query_to_db(query):
-    mysql_obj = getMysqlConnection()
+    mysql_obj = get_mysql_connection()
     cur = mysql_obj.cursor()
     cur.execute(query)
 
@@ -80,20 +72,12 @@ def send_query_to_db(query):
 
 
 # important dont ferget to close the connction through obj.close() at the end of your function
-def getMysqlConnection():
-    #complete
+def get_mysql_connection():
+    #live
     #return mysql.connector.connect(user='root', host='db', port='3306', password='test', database='smhoezma')
     #dev
     return mysql.connector.connect(user='root', host='192.168.178.30', port='3306', password='test', database='smhoezma')
 
 
-class Payload(object):
-    def __init__(self, j):
-        self.__dict__ = json.loads(j)
-
-
-
-
 if __name__ == '__main__':
-
     app.run(debug=True, host='0.0.0.0')
