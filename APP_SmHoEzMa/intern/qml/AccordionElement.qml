@@ -14,10 +14,10 @@ Rectangle {
     property int itemCounter: 0
     property var switchObject: null
 
-    color: "transparent"
+    color: "white"
     border.color: "black"
-    border.width: 3
-    radius: 5
+    border.width: 0
+//    radius: 5
 
     //Header
     RowLayout {

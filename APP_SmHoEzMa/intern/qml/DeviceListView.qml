@@ -12,7 +12,8 @@ Item {
     ScrollView {
         id: mainScrollView
         anchors.fill: parent
-        padding: 5
+        anchors.margins: 5
+//        padding: 5
         ListView {
             id: mainListView
             anchors.fill: parent
@@ -20,10 +21,11 @@ Item {
             spacing: 5
 
             model: deviceModel
-            delegate: AccordionElement {
+            delegate: AccordionElementWShadow {
                 title: elementTitle
                 contentJson: content
-                width: parent.width
+                width: mainScrollView.width
+
             }
 
         }

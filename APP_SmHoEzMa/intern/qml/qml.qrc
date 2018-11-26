@@ -12,5 +12,6 @@
         <file>MenuEntry.qml</file>
         <file>InfoView.qml</file>
         <file>SaturationSlider.qml</file>
+        <file>AccordionElementWShadow.qml</file>
     </qresource>
 </RCC>
