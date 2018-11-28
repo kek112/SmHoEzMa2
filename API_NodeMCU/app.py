@@ -11,7 +11,7 @@ def hello():
     return "Hello World!"
 
 
-@app.route('/api/sendvalues', methods=['GET', 'POST'])
+@app.route('/api/nodemcu', methods=['GET', 'POST'])
 def get_tasks():
     data = request.get_json()
     query_result = send_query_to_db("SELECT * FROM `Devices` WHERE IP = '" + data['IP'] + "'")
