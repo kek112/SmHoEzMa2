@@ -17,13 +17,17 @@ def get_tasks():
     query_result = send_query_to_db("SELECT * FROM `Devices` WHERE IP = '" + data['IP'] + "'")
     #if result is not empty than update the value
     if query_result:
-        send_query_to_db("UPDATE 'devices' SET Heat = '" + data['Temp'] + "', Light = '" + data['Light'] + "'")
+        send_query_to_db("UPDATE Devices SET Heat = '" + data['Temp'] + "', Light = '" + data['Light'] + "'")
     #if the result is empty insert new value
     else:
-        send_query_to_db("INSERT INTO `Devices` (Name,IP,GeraeteNummer,Heat,Light) VALUES('Sensor_','" + data['IP'] + "','" + data['Temp'] + "','0','" + data['Light'] + "')")
+        send_query_to_db("INSERT INTO Devices (Name,IP,GeraeteNummer,Heat,Light) VALUES('Sensor_','" + data['IP'] + "','" + data['Temp'] + "','0','" + data['Light'] + "')")
 
     return
 
+def send_query_to_db_no_response(query):
+    mysql_obj = get_mysql_connection()
+    cur = mysql_obj.cursor()
+    cur.execute(query)
 
 def send_query_to_db(query):
     mysql_obj = get_mysql_connection()
