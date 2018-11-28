@@ -28,10 +28,10 @@ def return_all_devices():
 
 
 # return the object of one specific device which is found by the ip
-#{
+# {
 #  "IP": "10.10.10.10"
 #  "GeraeteNummer": "1"
-#}
+# }
 @app.route('/api/device', methods=['Get','POST'])
 def return_one_devices():
     data = request.get_json()
@@ -121,9 +121,9 @@ def send_query_to_db(query, data):
 
 # important dont forget to close the connction through obj.close() at the end of your function
 def get_mysql_connection():
-    #live
-    #return mysql.connector.connect(user='root', host='db', port='3306', password='test', database='smhoezma')
-    #dev
+    # live
+    # return mysql.connector.connect(user='root', host='db', port='3306', password='test', database='smhoezma')
+    # dev
     return mysql.connector.connect(user='root', host='192.168.178.30', port='3306', password='test', database='smhoezma', autocommit=True)
 
 

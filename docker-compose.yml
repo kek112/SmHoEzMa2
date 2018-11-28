@@ -2,16 +2,19 @@ version: '3'
 services:
 
   api_bridge:
+#   image: kek112/API_Bridge
     build: ./API_Bridge
     ports:
       - "5001:5000"
 
   api_nodemcu:
+#   image: kek112/API_NodeMCU
     build: ./API_NodeMCU
     ports:
       - "5002:5000"
 
   api_smhoezma:
+#   image: kek112/API_SmHoEzMa
     build: ./API_SmHoEzMa
     ports:
       - "5003:5000"
