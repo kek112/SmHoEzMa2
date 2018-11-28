@@ -9,7 +9,7 @@ Es wird auch gleichzeitig geprüft ob das Gerät breits in der DB eingetragen is
 
 Sollten weitere Seonsoren in die NodeMCU eingebaut werden so müssten hier das SQl Statement angepasst werden.
 
-GeräteIP:5002/api/updatenodemcu  
+GeräteIP:5002/api/nodemcu  
 ```
 [POST] 
 JSON
