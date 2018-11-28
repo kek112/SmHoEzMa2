@@ -1,7 +1,7 @@
-from flask import Flask, jsonify, request
-from collections import namedtuple
+from flask import Flask, request
 import json
 import mysql.connector
+
 
 app = Flask(__name__)
 
@@ -12,36 +12,47 @@ def hello():
 
 
 @app.route('/api/nodemcu', methods=['GET', 'POST'])
-def get_tasks():
+def set_values():
     data = request.get_json()
-    query_result = send_query_to_db("SELECT * FROM `Devices` WHERE IP = '" + data['IP'] + "'")
-    #if result is not empty than update the value
+    query_check_existence = """SELECT * FROM Devices WHERE IP = %s"""
+    sql_data =(data["IP"])
+    query_result = send_query_to_db(query_check_existence, sql_data)
+
+    # if result is not empty than update the value
     if query_result:
-        send_query_to_db("UPDATE Devices SET Heat = '" + data['Temp'] + "', Light = '" + data['Light'] + "'")
-    #if the result is empty insert new value
+        query_update_values = """UPDATE Devices SET Heat = %s, Light = %s"""
+        sql_data = (data['Temp'], data['Light'])
+        send_query_to_db_no_response(query_update_values,sql_data)
+    # if the result is empty insert new value
     else:
-        send_query_to_db("INSERT INTO Devices (Name,IP,GeraeteNummer,Heat,Light) VALUES('Sensor_','" + data['IP'] + "','" + data['Temp'] + "','0','" + data['Light'] + "')")
+        query_insert_values = """INSERT INTO Devices (Name,IP,GeraeteNummer,Heat,Light) VALUES(%s, %s, %s, %s, %s)"""
+        sql_data = ("Sensor", data['IP'], "0", data['Temp'], data['Light'])
+        send_query_to_db(query_insert_values,sql_data)
 
     return
 
-def send_query_to_db_no_response(query):
-    mysql_obj = get_mysql_connection()
-    cur = mysql_obj.cursor()
-    cur.execute(query)
 
-def send_query_to_db(query):
+def send_query_to_db_no_response(query, data):
     mysql_obj = get_mysql_connection()
     cur = mysql_obj.cursor()
-    cur.execute(query)
+    cur.execute(query, data)
+    mysql_obj.close()
+
+
+def send_query_to_db(query, data):
+    mysql_obj = get_mysql_connection()
+    cur = mysql_obj.cursor()
+    cur.execute(query, data)
 
     row_headers = [x[0] for x in cur.description]  # this will extract row headers
-    rv = cur.fetchall()  # ectract data
+    rv = cur.fetchall()  # extract data
     mysql_obj.close()  # close connection
 
     json_data = []
     for result in rv:
         json_data.append(dict(zip(row_headers, result)))
     return json.dumps(json_data)
+
 
 
 # important dont ferget to close the connction through obj.close() at the end of your function

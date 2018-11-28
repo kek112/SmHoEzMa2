@@ -1,5 +1,4 @@
-from flask import Flask, jsonify, request
-from collections import namedtuple
+from flask import Flask, request
 import json
 import mysql.connector
 
