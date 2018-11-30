@@ -6,13 +6,15 @@ Item {
     property string title: "Title"
     property string contentJson: ""
     height: element.height
-//    width: element.width
+
+
     AccordionElement {
         id: element
         title: root.title
         contentJson: root.contentJson
         width: root.width
     }
+    //Draws a shadow under the source (the accrodion element)
     DropShadow {
         id: rectShadow
         anchors.fill: source
@@ -24,5 +26,9 @@ Item {
         color: "#80000000"
         smooth: true
         source: element
+    }
+
+    function sleep() {
+        element.sleep()
     }
 }

@@ -112,7 +112,7 @@ QString CPhilips::callBridge(QJsonDocument _body)
 
     QString tempJson(_body.toJson());
 
-    //NOTE: reply must be delted by user (deleteLater should be used)
+    //Old NOTE: reply must be delted by user (deleteLater should be used)
     reply = manager.put(request, tempJson.toUtf8());
 
     connect(reply , SIGNAL(readyRead()) , this , SLOT(waitForReply()));

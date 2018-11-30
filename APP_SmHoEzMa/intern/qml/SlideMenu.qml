@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4
 
-//App Menu which
+//App Menu which contains all the menu buttons and the coresponding
 Item {
     Keys.forwardTo: parent
     property string menuColor: "red"
@@ -18,6 +18,7 @@ Item {
         id: viewButtonGroup
         onClicked: {
             menuButtonPressed(button.stackItem)
+            closeMenu()
         }
     }
 

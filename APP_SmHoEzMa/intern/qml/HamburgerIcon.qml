@@ -12,12 +12,14 @@ Rectangle {
 
     //added a property to change the color of the MenuIcon
     property string iconColor: "white"
-    property string menuState: "menu"
+    property string menuButtonState: "menu"
+    signal buttonClicked
 
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            menuState = menuState === "menu" ? "back" : "menu"
+            buttonClicked()
+            //menuButtonState = menuButtonState === "menu" ? "back" : "menu"
         }
     }
 
@@ -25,6 +27,6 @@ Rectangle {
         id: menuBackIcon
         anchors.centerIn: parent
         barColor: iconColor
-        state: menuState
+        state: menuButtonState
     }
 }

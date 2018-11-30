@@ -18,7 +18,7 @@ Item {
             id: mainListView
             anchors.fill: parent
 
-            spacing: 5
+            spacing: 8
 
             model: deviceModel
             delegate: AccordionElementWShadow {
@@ -65,7 +65,7 @@ Item {
               "GeraeteNummer":2,
               "Heat":null,
               "Light":null,
-              "Hue":1000,
+              "Hue":10000,
               "Saturation":100,
               "Switch":false,
               "Brightness":100

@@ -28,6 +28,23 @@ ApplicationWindow {
     Material.foreground: "black"
     Material.primary: Material.Blue
 
+    function processMenuPress() {
+        if(menu.state == "open") {
+            menu.state = "closed"
+        }
+        else if(mainStack.depth > 1) {
+            mainStack.pop()
+        }
+        else {
+            menu.state = "open"
+        }
+        if(menu.state == "open" || mainStack.depth > 1) {
+            menuButton.menuButtonState = "back"
+        }
+        else {
+            menuButton.menuButtonState = "menu"
+        }
+    }
 
     //Header bar with Menubutton and Title
     header: ToolBar {
@@ -37,8 +54,8 @@ ApplicationWindow {
                 id: menuButton
                 iconColor: Material.foreground
                 color: Material.primary
-                onMenuStateChanged: {
-                    menu.state = menuState === "menu" ? "closed" : "open"
+                onButtonClicked: {
+                    processMenuPress()
                 }
             }
             Text {
@@ -64,7 +81,8 @@ ApplicationWindow {
         id: menu
         anchors.top: mainStack.top
         anchors.bottom: mainStack.bottom
-//        height: mainStack.height
+//        y: 0
+//        height: mainView.height
         width: mainView.width*0.8
 
         menuColor: "white"
@@ -92,25 +110,92 @@ ApplicationWindow {
         //pushing items on the main stack based on menu button pressed
         onMenuButtonPressed: {
             mainStack.push(item)
-            menuButton.menuState = "menu" //automatically closes menu
+            if(mainStack.depth <= 1) {
+                menuButton.menuButtonState = "menu"
+            }
+
         }
         onCloseMenu: {
-            menuButton.menuState = "menu"
+            state = "closed"
         }
+//        onXChanged: {
+//            if(menu.x > -(menu.width/2)) {
+//                menu.state = "closed"
+//                menu.state = "open"
+//                menuButton.menuButtonState = "back"
+//            }
+//            else if(menu.x <= -(menu.width/2)) {
+//                menu.state = "open"
+//                menu.state = "closed"
+//                menuButton.menuButtonState = "menu"
+//            }
+//        }
+
     }
 
-    //handling back key press
-    //TODO: currently the Key is processed in a child (probably)
-    //solutions: forward the KeyEvent or handle it in the corresponding object (this would mean the Key function needs to be written in every object, maybe a EventHandler can be used like in QtC++)
+    PropertyAnimation {id: closeMenuAnimation; target: menu; properties: "x"; to: -(menu.width); duration: animationDuration; easing.type: Easing.InOutQuad }
+    PropertyAnimation {id: openMenuAnimation; target: menu; properties: "x"; to: 0; duration: animationDuration; easing.type: Easing.InOutQuad }
+
+    MouseArea {
+        id: slideArea
+
+        width: 20
+        anchors.top: menu.top
+        anchors.left: menu.right
+        anchors.bottom: menu.bottom
+
+        property int lastMenuX;
+
+        //check if menu is extended if yes close it otherwise relay the mousclick to the parent
+        onClicked: {
+            if(menu.state == "open") {
+                menu.state = "closed"
+                mouse.accepted = true
+            } else {
+                mouse.accepted = false
+            }
+        }
+//        onPressed: {
+//            lastMenuX = menu.x
+//        }
+//        onReleased: {
+//            if(lastMenuX == menu.x) {
+//                if(menu.state == "open") {
+//                    menu.state = "closed"
+//                    menuButton.menuButtonState = "menu"
+//                } else {
+//                    mouse.accepted = false
+//                }
+//            } else {
+//                if(menu.x > -(menu.width/2)) {
+//                    menu.state = "closed"
+//                    menu.state = "open"
+//                    menuButton.menuButtonState = "back"
+//                }
+//                else if(menu.x <= -(menu.width/2)) {
+//                    menu.state = "open"
+//                    menu.state = "closed"
+//                    menuButton.menuButtonState = "menu"
+//                }
+//            }
+//        }
+
+        drag.target: menu
+        drag.axis: Drag.XAxis
+        drag.minimumX: -menu.width
+        drag.maximumX: 0
+    }
+
+    //handling back key press or backspace on pc
+    //currently only gets handeld when app displays mainView (other views propably take focus)
     Item {
         focus: true
+
         Keys.onPressed: {
             if (event.key == Qt.Key_Back || event.key == Qt.Key_Backspace) {
-                if(menu.state === "open") {
-                    menuButton.menuState = "menu" //automatically closes menu
-                }
-                else if (mainStack.depth > 1) {
-                    mainStack.pop()
+                if(menuButton.menuButtonState == "back") {
+                    processMenuPress()
+                    event.accepted = true;
                 }
             }
         }
