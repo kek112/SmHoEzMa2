@@ -8,6 +8,23 @@ Item {
     property int currentActiveElement: 0
     property int buttonSize: 48
     property int fullHeight: 0
+    property var settingsMenu: Menu {
+        id: deviceSettingsMenu
+        x: mainView.width - deviceSettingsMenu.width
+        y: 0
+        MenuItem {
+            text: "Sleep"
+            onClicked: {
+                mainStack.currentItem.sleepAllDevices();
+            }
+        }
+        MenuItem {
+            text: "Reload"
+            onClicked: {
+                mainStack.currentItem.loadDevices();
+            }
+        }
+    }
 
     ScrollView {
         id: mainScrollView
@@ -57,6 +74,90 @@ Item {
               "Saturation":null,
               "Switch":null,
               "Brightness":null
+           },
+           {
+              "DeviceID":2,
+              "Name":"Flur Lampe",
+              "IP":"1.2.3.4",
+              "GeraeteNummer":2,
+              "Heat":null,
+              "Light":null,
+              "Hue":10000,
+              "Saturation":100,
+              "Switch":false,
+              "Brightness":100
+           },
+           {
+              "DeviceID":2,
+              "Name":"Flur Lampe",
+              "IP":"1.2.3.4",
+              "GeraeteNummer":2,
+              "Heat":null,
+              "Light":null,
+              "Hue":10000,
+              "Saturation":100,
+              "Switch":false,
+              "Brightness":100
+           },
+           {
+              "DeviceID":2,
+              "Name":"Flur Lampe",
+              "IP":"1.2.3.4",
+              "GeraeteNummer":2,
+              "Heat":null,
+              "Light":null,
+              "Hue":10000,
+              "Saturation":100,
+              "Switch":false,
+              "Brightness":100
+           },
+           {
+              "DeviceID":2,
+              "Name":"Flur Lampe",
+              "IP":"1.2.3.4",
+              "GeraeteNummer":2,
+              "Heat":null,
+              "Light":null,
+              "Hue":10000,
+              "Saturation":100,
+              "Switch":false,
+              "Brightness":100
+           },
+           {
+              "DeviceID":2,
+              "Name":"Flur Lampe",
+              "IP":"1.2.3.4",
+              "GeraeteNummer":2,
+              "Heat":null,
+              "Light":null,
+              "Hue":10000,
+              "Saturation":100,
+              "Switch":false,
+              "Brightness":100
+           },
+           {
+              "DeviceID":2,
+              "Name":"Flur Lampe",
+              "IP":"1.2.3.4",
+              "GeraeteNummer":2,
+              "Heat":null,
+              "Light":null,
+              "Hue":10000,
+              "Saturation":100,
+              "Switch":false,
+              "Brightness":100
+           },
+           {
+              "DeviceID":2,
+              "Name":"Flur Lampe",
+              "IP":"1.2.3.4",
+              "GeraeteNummer":2,
+              "Heat":null,
+              "Light":null,
+              "Hue":10000,
+              "Saturation":100,
+              "Switch":false,
+              "Brightness":100
            },
            {
               "DeviceID":2,

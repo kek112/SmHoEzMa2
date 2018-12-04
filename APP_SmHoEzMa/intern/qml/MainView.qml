@@ -28,6 +28,7 @@ ApplicationWindow {
     Material.foreground: "black"
     Material.primary: Material.Blue
 
+    //function that controls menu and menu button
     function processMenuPress() {
         if(menu.isOpen) {
             menu.closeMenu()
@@ -48,7 +49,7 @@ ApplicationWindow {
 
 
 
-    //Header bar with Menubutton and Title
+    //Header bar with Menubutton, title and posibly a settings button
     header: ToolBar {
         RowLayout {
             anchors.fill: parent
@@ -63,6 +64,13 @@ ApplicationWindow {
             Text {
                 text: "SmHoEzMa"
                 font.pointSize: 15
+                Layout.fillWidth: true
+            }
+            ToolButton {
+                text: "⋮"
+                font.pointSize: 27
+                onClicked: mainStack.currentItem.settingsMenu.open()
+                visible: mainStack.currentItem.settingsMenu != null
             }
         }
     }
@@ -140,13 +148,13 @@ ApplicationWindow {
 //        ]
 
         //pushing items on the main stack based on menu button pressed
-//        onMenuButtonPressed: {
-//            mainStack.push(item)
-//            if(mainStack.depth <= 1) {
-//                menuButton.menuButtonState = "menu"
-//            }
+        onMenuButtonPressed: {
+            mainStack.push(item)
+            if(mainStack.depth <= 1) {
+                menuButton.menuButtonState = "menu"
+            }
 
-//        }
+        }
 //        onCloseMenu: {
 //            state = "closed"
 //        }

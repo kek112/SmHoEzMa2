@@ -35,56 +35,34 @@ Drawer {
     ColumnLayout {
         anchors.fill: parent
         spacing: 0
-        MenuEntry {
+        MenuItem {
             id: mainViewButton
-            entryText: "Devices"
-            iconSource: "qrc:/DeviceHubIcon"
+            text: "Devices"
+            icon.source: "qrc:/DeviceHubIcon"
 
             Layout.fillWidth: true
 
             ButtonGroup.group: viewButtonGroup
-            stackItem: DeviceListView {}
+            property var stackItem: DeviceListView {}
         }
-        MenuEntry {
-            entryText: "Settings"
-            iconSource: "qrc:/SettingsIcon"
+        MenuItem {
+            text: "Settings"
+            icon.source: "qrc:/SettingsIcon"
 
             Layout.fillWidth: true
 
             ButtonGroup.group: viewButtonGroup
-        }
-        MenuEntry {
-            entryText: "Sleep"
-            iconSource: "qrc:/AddIcon"
-
-            Layout.fillWidth: true
-
-            onClicked: {
-                mainViewButton.stackItem.sleepAllDevices();
-                closeMenu()
-            }
-        }
-        MenuEntry {
-            entryText: "Reload"
-            iconSource: "qrc:/DeveloperBoardIcon"
-
-            Layout.fillWidth: true
-
-            onClicked: {
-                mainViewButton.stackItem.loadDevices();
-                closeMenu()
-            }
-
+            property var stackItem: Item {}
         }
 
-        MenuEntry {
-            entryText: "Info"
-            iconSource: "qrc:/InfoIcon"
+        MenuItem {
+            text: "Info"
+            icon.source: "qrc:/InfoIcon"
 
             Layout.fillWidth: true
 
             ButtonGroup.group: viewButtonGroup
-            stackItem: InfoView {}
+            property var stackItem: InfoView {}
         }
         Item {
             Layout.fillHeight: true
