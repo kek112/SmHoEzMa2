@@ -1,8 +1,8 @@
-from flask import Flask
+from flask import Flask, request
 import json
 import mysql.connector
-import re
 import requests
+
 
 app = Flask(__name__)
 ip = '192.168.137.173'
