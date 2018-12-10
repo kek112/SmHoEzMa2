@@ -5,10 +5,11 @@ import requests
 
 
 app = Flask(__name__)
-ip = '192.168.137.173'
+ip = '192.168.0.2'
 port = '8000'
 
-def getMysqlConnection():
+
+def get_mysql_connection():
     return mysql.connector.connect(user='root', host=ip, port='3306', password='test', database='smhoezma')
 
 
@@ -32,7 +33,7 @@ def print_lamp_states():
 @app.route('/update_lamp_states', methods=['GET'])
 def update_lamp_states():
     lamp_states = get_lamp_states()
-    mysql_obj = getMysqlConnection()
+    mysql_obj = get_mysql_connection()
     cur = mysql_obj.cursor()
     for lamp_number in lamp_states:
         settings = lamp_states[lamp_number]['state']
@@ -81,11 +82,10 @@ def get_lamp_states():
 
 @app.route('/update_lamp', methods=['GET', 'POST'])
 def update_lamp():
-    # example json:{ "hue": 120, "sat": 78, "on": "true", "bri": 210, "name": Super Lampe, "ip": 192.168.0.87, "num": 5}
     data = request.get_json()
     payload = json.dumps(data)
     r = requests.put('http://'+ip+':'+port+'/api/newdeveloper/lights/1/state', data=payload)
-    mysql_obj = getMysqlConnection()
+    mysql_obj = get_mysql_connection()
     cur = mysql_obj.cursor()
     write_to_db(mysql_obj, cur, data['hue'], data['sat'], data['on'], data['bri'], data['name'],
                 data['ip'], data['num'])
