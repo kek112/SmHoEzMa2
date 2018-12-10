@@ -31,10 +31,10 @@ ausgeführt werden soll.
 Da ein Teil der zu verarbeitenden Daten von einem Mikrocontroller kommen, muss dieser entsprechend aufgebaut und 
 programmiert werden.
 Die dazu notwendige Anleitung befindet sind in (Link zur NodeMCU readme). Hier wurden im Moment 2 Sensoren 
-implementiert welche 
-die Temperatur sowie das Umgebungslicht messen. Es ist hier ein einfaches noch weitere Seonsoren anzuschließen 
-aber wir haben und auf 
-die grundlegenden Sensoren beschränkt welche am ANfang den meisten Sinn machen. 
+implementiert, welche 
+die Temperatur sowie das Umgebungslicht messen. Es ist hier ein einfaches noch weitere Seonsoren anzuschließen, 
+aber wir haben uns auf 
+die grundlegenden Sensoren beschränkt welche am Anfang den meisten Sinn machen. 
 
 Hier wäre es auch sinnvoll sobald mehrere Sensoren eingesetzt werden eine PCB Zeichnung vorzunehmen und diese 
 dann Drucken zu lassen.
