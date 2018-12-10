@@ -29,28 +29,41 @@ def print_lamp_states():
     return string
 
 
-@app.route('/update_lamp_states', methods=['GET', 'POST'])
+@app.route('/update_lamp_states', methods=['GET'])
 def update_lamp_states():
     lamp_states = get_lamp_states()
     mysql_obj = getMysqlConnection()
     cur = mysql_obj.cursor()
     for lamp_number in lamp_states:
-        settings = re.sub('u\'', '', str(lamp_states[lamp_number]['state']))
-        settings = re.sub('\'', '', settings)
+        settings = lamp_states[lamp_number]['state']
         name = "Lamp "+str(lamp_number)
-        values = "'" + name + "'" + "', '" + str(ip) + "', '" + str(lamp_number) + "', '" + settings + "'"
-        lamp_exists = is_lamp_in_db(cur, lamp_number)
-        if lamp_exists:
-            sql = "UPDATE Devices " \
-                  "SET Name='"+name+"', IP='"+ip+"', Settings='"+settings+"' "\
-                  "WHERE GeraeteNummer="+lamp_number
-        else:
-            sql = 'INSERT INTO Devices (Name, IP, GeraeteNummer, Settings) VALUES ('+values+')'
-        print sql
-        cur.execute(sql)
-        mysql_obj.commit()
+        write_to_db(mysql_obj, cur, settings['hue'], settings['sat'], settings['on'], settings['bri'],
+                    name, ip, lamp_number)
     mysql_obj.close()
     return 'All lamps were inserted or updated!'
+
+
+def write_to_db(_mysql_obj, _cur, _hue, _saturation, _on, _brightness, _name, _ip_string, _lamp_number):
+    assert _cur is not None
+    hue = str(_hue)
+    saturation = str(_saturation)
+    on = str(int(_on))
+    brightness = str(_brightness)
+    ip_string = str(_ip_string)
+    lamp_number = str(_lamp_number)
+    values = "'" + _name + "', '" + ip_string + "', " + lamp_number + ", " + hue + ", " + saturation + ", " + \
+             on + ", " + brightness
+    lamp_exists = is_lamp_in_db(_cur, lamp_number)
+    if lamp_exists:
+        sql = "UPDATE Devices " \
+              "SET Name='" + _name + "', IP='" + ip_string + "', Hue=" + hue + ", Saturation=" + saturation + \
+              ", Switch=" + on + ", Brightness=" + brightness + " " \
+              "WHERE GeraeteNummer=" + lamp_number
+    else:
+        sql = 'INSERT INTO Devices (Name, IP, GeraeteNummer, Hue, Saturation, Switch, Brightness) VALUES (' + values+')'
+    print sql
+    _cur.execute(sql)
+    _mysql_obj.commit()
 
 
 def is_lamp_in_db(cursor, lamp_number):
