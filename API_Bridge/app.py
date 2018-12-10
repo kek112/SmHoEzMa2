@@ -17,12 +17,7 @@ class Payload(object):
         self.__dict__ = json.loads(j)
 
 
-@app.route("/")
-def hello():
-    return "Hello World!"
-
-
-@app.route('/print_lamp_states', methods=['GET', 'POST'])
+@app.route('/print_lamp_states', methods=['GET'])
 def print_lamp_states():
     lamp_states = get_lamp_states()
     string = '<table>'
