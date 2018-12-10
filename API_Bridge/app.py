@@ -81,10 +81,17 @@ def get_lamp_states():
 
 @app.route('/update_lamp', methods=['GET', 'POST'])
 def update_lamp():
-    settings = {"hue": 34, "on": True, "bri": 56}
-    payload = json.dumps(settings)
+    # example json:{ "hue": 120, "sat": 78, "on": "true", "bri": 210, "name": Super Lampe, "ip": 192.168.0.87, "num": 5}
+    data = request.get_json()
+    payload = json.dumps(data)
     r = requests.put('http://'+ip+':'+port+'/api/newdeveloper/lights/1/state', data=payload)
+    mysql_obj = getMysqlConnection()
+    cur = mysql_obj.cursor()
+    write_to_db(mysql_obj, cur, data['hue'], data['sat'], data['on'], data['bri'], data['name'],
+                data['ip'], data['num'])
+    mysql_obj.close()
     return "Status-Code: "+str(r.status_code)
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
