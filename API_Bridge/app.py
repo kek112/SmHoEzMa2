@@ -1,21 +1,12 @@
 from flask import Flask, request
 import json
-import mysql.connector
 import requests
+from mysql_helper import mysql_helper
 
 
 app = Flask(__name__)
 ip = '192.168.0.2'
 port = '8000'
-
-
-def get_mysql_connection():
-    return mysql.connector.connect(user='root', host=ip, port='3306', password='test', database='smhoezma')
-
-
-class Payload(object):
-    def __init__(self, j):
-        self.__dict__ = json.loads(j)
 
 
 @app.route('/print_lamp_states', methods=['GET'])
@@ -33,46 +24,40 @@ def print_lamp_states():
 @app.route('/update_lamp_states', methods=['GET'])
 def update_lamp_states():
     lamp_states = get_lamp_states()
-    mysql_obj = get_mysql_connection()
-    cur = mysql_obj.cursor()
     for lamp_number in lamp_states:
         settings = lamp_states[lamp_number]['state']
         name = "Lamp "+str(lamp_number)
-        write_to_db(mysql_obj, cur, settings['hue'], settings['sat'], settings['on'], settings['bri'],
+        write_to_db(settings['hue'], settings['sat'], settings['on'], settings['bri'],
                     name, ip, lamp_number)
-    mysql_obj.close()
     return 'All lamps were inserted or updated!'
 
 
-def write_to_db(_mysql_obj, _cur, _hue, _saturation, _on, _brightness, _name, _ip_string, _lamp_number):
-    assert _cur is not None
+def write_to_db(_hue, _saturation, _on, _brightness, _name, _ip_string, _lamp_number):
     hue = str(_hue)
     saturation = str(_saturation)
     on = str(int(_on))
     brightness = str(_brightness)
     ip_string = str(_ip_string)
     lamp_number = str(_lamp_number)
-    values = "'" + _name + "', '" + ip_string + "', " + lamp_number + ", " + hue + ", " + saturation + ", " + \
-             on + ", " + brightness
-    lamp_exists = is_lamp_in_db(_cur, lamp_number)
+    lamp_exists = is_lamp_in_db(lamp_number)
+    sql_data = (_name, ip_string, hue, saturation, on, brightness, lamp_number)
     if lamp_exists:
-        sql = "UPDATE Devices " \
-              "SET Name='" + _name + "', IP='" + ip_string + "', Hue=" + hue + ", Saturation=" + saturation + \
-              ", Switch=" + on + ", Brightness=" + brightness + " " \
-              "WHERE GeraeteNummer=" + lamp_number
+        sql = """UPDATE Devices \
+              SET Name=%s, IP=%s, Hue=%s, Saturation=%s, \
+              Switch=%s, Brightness=%s \
+              WHERE GeraeteNummer=%s"""
     else:
-        sql = 'INSERT INTO Devices (Name, IP, GeraeteNummer, Hue, Saturation, Switch, Brightness) VALUES (' + values+')'
+        sql = """INSERT INTO Devices (Name, IP, Hue, Saturation, Switch, Brightness, GeraeteNummer) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s)"""
     print sql
-    _cur.execute(sql)
-    _mysql_obj.commit()
+    mysql_helper.send_query_to_db_no_response(sql, sql_data)
 
 
-def is_lamp_in_db(cursor, lamp_number):
-    assert cursor is not None
-    sql = 'SELECT COUNT(*) FROM Devices WHERE GeraeteNummer='+lamp_number
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    return True if result[0] > 0 else False
+def is_lamp_in_db(lamp_number):
+    sql = """SELECT COUNT(*) AS 'num' FROM Devices WHERE GeraeteNummer=%s"""
+    result = mysql_helper.send_query_to_db(sql, (lamp_number,))
+    print bool(result[0]["num"])
+    return bool(result[0]["num"])
 
 
 def get_lamp_states():
@@ -82,15 +67,13 @@ def get_lamp_states():
 
 @app.route('/update_lamp', methods=['GET', 'POST'])
 def update_lamp():
-    data = request.get_json()
+    data = {"hue": 120, "sat": 78, "on": True, "bri": 210, "name": "Super Lampe", "ip": "192.168.0.87", "num": 2}
+    #data = request.get_json()
     payload = json.dumps(data)
+    print payload
     r = requests.put('http://'+ip+':'+port+'/api/newdeveloper/lights/1/state', data=payload)
-    mysql_obj = get_mysql_connection()
-    cur = mysql_obj.cursor()
-    write_to_db(mysql_obj, cur, data['hue'], data['sat'], data['on'], data['bri'], data['name'],
-                data['ip'], data['num'])
-    mysql_obj.close()
-    return "Status-Code: "+str(r.status_code)
+    write_to_db(data['hue'], data['sat'], data['on'], data['bri'], data['name'], data['ip'], data['num'])
+    return "Status-Code: " + str(r.status_code)
 
 
 if __name__ == '__main__':
