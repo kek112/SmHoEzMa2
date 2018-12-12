@@ -49,14 +49,12 @@ def write_to_db(_hue, _saturation, _on, _brightness, _name, _ip_string, _lamp_nu
     else:
         sql = """INSERT INTO Devices (Name, IP, Hue, Saturation, Switch, Brightness, GeraeteNummer) 
                 VALUES (%s, %s, %s, %s, %s, %s, %s)"""
-    print sql
     mysql_helper.send_query_to_db_no_response(sql, sql_data)
 
 
 def is_lamp_in_db(lamp_number):
     sql = """SELECT COUNT(*) AS 'num' FROM Devices WHERE GeraeteNummer=%s"""
     result = mysql_helper.send_query_to_db(sql, (lamp_number,))
-    print bool(result[0]["num"])
     return bool(result[0]["num"])
 
 
@@ -65,13 +63,11 @@ def get_lamp_states():
     return r
 
 
-@app.route('/update_lamp', methods=['GET', 'POST'])
+@app.route('/update_lamp', methods=['POST'])
 def update_lamp():
-    data = {"hue": 120, "sat": 78, "on": True, "bri": 210, "name": "Super Lampe", "ip": "192.168.0.87", "num": 2}
-    #data = request.get_json()
-    payload = json.dumps(data)
-    print payload
-    r = requests.put('http://'+ip+':'+port+'/api/newdeveloper/lights/1/state', data=payload)
+    data = request.get_json()
+    payload = json.dumps({'hue': data['hue'], 'sat': data['sat'], 'on': data['on'], 'bri': data['bri']})
+    r = requests.put('http://'+ip+':'+port+'/api/newdeveloper/lights/'+str(data['num'])+'/state', data=payload)
     write_to_db(data['hue'], data['sat'], data['on'], data['bri'], data['name'], data['ip'], data['num'])
     return "Status-Code: " + str(r.status_code)
 
