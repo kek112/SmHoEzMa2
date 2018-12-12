@@ -6,6 +6,7 @@ def send_query_to_db_no_response(query, data):
     mysql_obj = get_mysql_connection()
     cur = mysql_obj.cursor()
     cur.execute(query, data)
+    mysql_obj.commit()
     mysql_obj.close()
 
 
