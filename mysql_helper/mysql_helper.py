@@ -26,9 +26,7 @@ def send_query_to_db(query, data):
 
 
 def get_mysql_connection():
-    # live
-    # return mysql.connector.connect(user='root', host='db', port='3306', password='test', database='smhoezma')
-    # martin
-    return mysql.connector.connect(user='root', host='192.168.0.2', port='3306', password='test', database='smhoezma')
-    # karl
-    #return mysql.connector.connect(user='root', host='192.168.178.30', port='3306', password='test', database='smhoezma', autocommit=True)
+    live_host = 'db'
+    martin_host = '192.168.0.2'
+    karl_host = '192.168.178.30'
+    return mysql.connector.connect(user='root', host=martin_host, port='3306', password='test', database='smhoezma')
