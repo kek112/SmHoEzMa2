@@ -13,6 +13,7 @@ Rectangle {
 
     property int itemCounter: 0
     property var switchObject: null
+    property var homecomingObject: null
 
     color: "white"
     border.color: "black"
@@ -41,6 +42,7 @@ Rectangle {
         }
 
     }
+    //press to collabse AccordionElement
     MouseArea {
         anchors.fill: headerLayout
         onClicked: {
@@ -120,7 +122,7 @@ Rectangle {
       */
 
     //TODO: connect settings to send the changes made in app to api
-    //NOTE: rename switch to On/Off makes it easier to use?
+    //NOTE: rename switch to On/Off to make meaning clearer?
     function createContent() {
 
         var jsonOptionsList = ["Heat", "Light", "Switch", "Saturation", "Brightness", "Hue"]
@@ -216,6 +218,7 @@ Rectangle {
 
             settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Switch {}', contentLayout);
             settingsObject.checked = false
+            homecomingObject = settingsObject
             //Layout information
             settingsObject.Layout.column = 1
             settingsObject.Layout.row = itemCounter
@@ -227,10 +230,22 @@ Rectangle {
         }
     }
 
+    //check if the device can be switch off if yes do so
     function sleep() {
-//        console.log("sleep")
         if(switchObject != null) {
             switchObject.checked = false
+        }
+    }
+
+    //turns on the device (if possible) if the homecoming setting is activated
+    function home() {
+        //check if the device has the homecomingObject (which it has if it has an on/off switch)
+        if(homecomingObject != null) {
+            //check if homecoming is activated and activate light and deactivate homecoming to prevent it be activated again unintentionally
+            if(homecomingObject.checked == true) {
+                switchObject.checked = true
+                homecomingObject.checked = false
+            }
         }
     }
 }

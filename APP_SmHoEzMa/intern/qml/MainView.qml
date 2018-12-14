@@ -26,7 +26,7 @@ ApplicationWindow {
     //https://doc.qt.io/qt-5.11/qtquickcontrols2-material.html
     Material.accent: Material.LightBlue
     Material.foreground: "black"
-    Material.primary: Material.Blue
+    Material.primary: "#cde7ff"
 
     //function that controls menu and menu button
     function processMenuPress() {
@@ -112,40 +112,6 @@ ApplicationWindow {
             menuButton.menuButtonState = "back"
         }
 
-//        onAboutToHide: {
-//            isOpen = false;
-//            if(mainStack.depth > 1) {
-//                menuButton.menuButtonState = "back"
-//            } else {
-//                menuButton.menuButtonState = "menu"
-//            }
-//        }
-//        onAboutToShow: {
-//            isOpen = true;
-//            menuButton.menuButtonState = "back"
-//        }
-
-//        menuColor: "white"
-
-//        //set standard state
-//        state: "closed"
-//        //Define multiple animation states (x coordinate needs to be changed)
-//        states: [
-//            State {
-//                name: "closed"
-//                PropertyChanges { target: menu; x: menu.width*-1 }
-//            },
-//            State {
-//                name: "open"
-//                PropertyChanges { target: menu; x: 0 }
-//            }
-//        ]
-//        //Define transistion information like type and duration
-//        transitions: [
-//            Transition {
-//                PropertyAnimation { target: menu; properties: "x"; duration: animationDuration; easing.type: Easing.InOutQuad }
-//            }
-//        ]
 
         //pushing items on the main stack based on menu button pressed
         onMenuButtonPressed: {
@@ -155,68 +121,8 @@ ApplicationWindow {
             }
 
         }
-//        onCloseMenu: {
-//            state = "closed"
-//        }
 
     }
-//    MouseArea {
-//        id: slideArea
-
-//        //MouseArea width cannot overlap with sliders of the DeviceViews --> small area when menu is closed but needs to cover the rest of the screen ehen menu is opened
-//        width: menu.state == "closed" ? 15 : mainStack.width - menu.width
-//        anchors.top: menu.top
-//        anchors.left: menu.right
-//        anchors.bottom: menu.bottom
-
-//        property int lastMenuX;
-
-//        //check if menu is extended if yes close it otherwise relay the mousclick to the parent
-////        onClicked: {
-////            if(menu.state == "open") {
-////                menu.state = "closed"
-////                mouse.accepted = true
-////            } else {
-////                mouse.accepted = false
-////            }
-////        }
-//        onPressed: {
-//            lastMenuX = menu.x
-////            mouse.accepted = false
-//        }
-//        onReleased: {
-//            if(lastMenuX == menu.x) {
-//                if(menu.state == "open") {
-//                    menu.state = "closed"
-//                    menuButton.menuButtonState = "menu"
-//                    mouse.accepted = true
-//                } else {
-//                    console.log("carry on")
-//                    mouse.accepted = false
-//                }
-//            } else {
-//                if(menu.x > -(menu.width/2)) {
-//                    menu.state = "closed"
-//                    menu.state = "open"
-//                    menuButton.menuButtonState = "back"
-//                }
-//                else if(menu.x <= -(menu.width/2)) {
-//                    menu.state = "open"
-//                    menu.state = "closed"
-//                    menuButton.menuButtonState = "menu"
-//                }
-//            }
-//        }
-
-//        drag.target: menu
-//        drag.axis: Drag.XAxis
-//        drag.minimumX: -menu.width
-//        drag.maximumX: 0
-//    }
-
-//    PropertyAnimation {id: closeMenuAnimation; target: menu; properties: "x"; to: -(menu.width); duration: animationDuration; easing.type: Easing.InOutQuad }
-//    PropertyAnimation {id: openMenuAnimation; target: menu; properties: "x"; to: 0; duration: animationDuration; easing.type: Easing.InOutQuad }
-
 
 
     //handling back key press or backspace on pc

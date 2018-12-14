@@ -43,7 +43,10 @@ Drawer {
             Layout.fillWidth: true
 
             ButtonGroup.group: viewButtonGroup
-            property var stackItem: DeviceListView {}
+            property var stackItem: DeviceListView {
+                apiIpAddress: settingsView.apiIpAddress
+                homePosition: settingsView.homePosition
+            }
         }
         MenuItem {
             text: "Settings"
@@ -52,7 +55,9 @@ Drawer {
             Layout.fillWidth: true
 
             ButtonGroup.group: viewButtonGroup
-            property var stackItem: Item {}
+            property var stackItem: SettingsView {
+                id: settingsView
+            }
         }
 
         MenuItem {
@@ -64,6 +69,7 @@ Drawer {
             ButtonGroup.group: viewButtonGroup
             property var stackItem: InfoView {}
         }
+
         Item {
             Layout.fillHeight: true
             Layout.fillWidth: true

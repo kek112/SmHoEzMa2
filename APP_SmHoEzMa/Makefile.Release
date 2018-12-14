@@ -263,15 +263,17 @@ intern/build/compile/release/res/qrc_icons.cpp: intern/assets/icons/icons.qrc \
 
 intern/build/compile/release/res/qrc_qml.cpp: intern/qml/qml.qrc \
 		C:/Qt/5.11.1/mingw53_32/bin/rcc.exe \
+		intern/qml/Map.qml \
 		intern/qml/HamburgerIcon.qml \
 		intern/qml/AccordionElement.qml \
+		intern/qml/AccordionElementWShadow.qml \
 		intern/qml/SlideMenu.qml \
 		intern/qml/PanelItem.qml \
 		intern/qml/MenuEntry.qml \
 		intern/qml/MainView.qml \
 		intern/qml/Accordion.qml \
+		intern/qml/SettingsView.qml \
 		intern/qml/MenuBackIcon.qml \
-		intern/qml/map.qml \
 		intern/qml/InfoView.qml \
 		intern/qml/DeviceListView.qml \
 		intern/qml/SaturationSlider.qml

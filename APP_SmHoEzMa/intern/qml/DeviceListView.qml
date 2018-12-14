@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import QtLocation 5.6
+import QtPositioning 5.6
 
 Item {
     id: test
@@ -8,6 +10,10 @@ Item {
     property int currentActiveElement: 0
     property int buttonSize: 48
     property int fullHeight: 0
+
+    property string apiIpAddress: ""
+    property var homePosition: null
+
     property var settingsMenu: Menu {
         id: deviceSettingsMenu
         x: mainView.width - deviceSettingsMenu.width
@@ -86,90 +92,6 @@ Item {
               "Saturation":100,
               "Switch":false,
               "Brightness":100
-           },
-           {
-              "DeviceID":2,
-              "Name":"Flur Lampe",
-              "IP":"1.2.3.4",
-              "GeraeteNummer":2,
-              "Heat":null,
-              "Light":null,
-              "Hue":10000,
-              "Saturation":100,
-              "Switch":false,
-              "Brightness":100
-           },
-           {
-              "DeviceID":2,
-              "Name":"Flur Lampe",
-              "IP":"1.2.3.4",
-              "GeraeteNummer":2,
-              "Heat":null,
-              "Light":null,
-              "Hue":10000,
-              "Saturation":100,
-              "Switch":false,
-              "Brightness":100
-           },
-           {
-              "DeviceID":2,
-              "Name":"Flur Lampe",
-              "IP":"1.2.3.4",
-              "GeraeteNummer":2,
-              "Heat":null,
-              "Light":null,
-              "Hue":10000,
-              "Saturation":100,
-              "Switch":false,
-              "Brightness":100
-           },
-           {
-              "DeviceID":2,
-              "Name":"Flur Lampe",
-              "IP":"1.2.3.4",
-              "GeraeteNummer":2,
-              "Heat":null,
-              "Light":null,
-              "Hue":10000,
-              "Saturation":100,
-              "Switch":false,
-              "Brightness":100
-           },
-           {
-              "DeviceID":2,
-              "Name":"Flur Lampe",
-              "IP":"1.2.3.4",
-              "GeraeteNummer":2,
-              "Heat":null,
-              "Light":null,
-              "Hue":10000,
-              "Saturation":100,
-              "Switch":false,
-              "Brightness":100
-           },
-           {
-              "DeviceID":2,
-              "Name":"Flur Lampe",
-              "IP":"1.2.3.4",
-              "GeraeteNummer":2,
-              "Heat":null,
-              "Light":null,
-              "Hue":10000,
-              "Saturation":100,
-              "Switch":false,
-              "Brightness":100
-           },
-           {
-              "DeviceID":2,
-              "Name":"Flur Lampe",
-              "IP":"1.2.3.4",
-              "GeraeteNummer":2,
-              "Heat":null,
-              "Light":null,
-              "Hue":10000,
-              "Saturation":100,
-              "Switch":false,
-              "Brightness":100
            }
         ]
         ');
@@ -181,6 +103,42 @@ Item {
         for(var i = 0; i < mainListView.count; i++) {
             mainListView.currentIndex = i
             mainListView.currentItem.sleep()
+        }
+    }
+
+    PositionSource {
+        id: positionSource
+        active: true
+        Component.onCompleted:  {
+            var currentPosition = positionSource.position.coordinate;
+            map.center = currentPosition;
+            marker.coordinate = currentPosition;
+        }
+    }
+
+    //activate worker thread every 5s
+    Timer {
+        interval: 5000; running: true; repeat: true
+        onTriggered: worker.sendMessage()
+    }
+
+    //function is activatet in a thread to make sure it doesnt block the app
+    WorkerScript {
+        id: worker
+        onMessage: {
+            //check if the homePosition has been set
+            if (homePosition != null) {
+                //check if the person is closer than 50m to the homePosition
+                if(positionSource.position.coordinate.distanceTo(homePosition) < 50) {
+                    //iterate through the devices and activate the home function which checks if the homecoming switch is activated --> activate light and deactivate homecoming
+                    for(var i = 0; i < mainListView.count; i++) {
+                        mainListView.currentIndex = i
+                        mainListView.currentItem.home()
+                    }
+                }
+            }
+
+
         }
     }
 
