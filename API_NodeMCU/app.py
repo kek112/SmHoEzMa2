@@ -1,19 +1,10 @@
-from flask import Flask, jsonify, request
-from collections import namedtuple
+from flask import Flask, request
 import json
+import mysql.connector
+from mysql_helper import mysql_helper
+
 
 app = Flask(__name__)
-
-
-def _json_object_hook(d): return namedtuple('X', d.keys())(*d.values())
-
-
-def json2obj(data): return json.loads(data, object_hook=_json_object_hook)
-
-
-class Payload(object):
-    def __init__(self, j):
-        self.__dict__ = json.loads(j)
 
 
 @app.route("/")
@@ -21,37 +12,24 @@ def hello():
     return "Hello World!"
 
 
-@app.route('/test', methods=['GET', 'POST'])
-def get_tasks():
-    received_data = json2obj(request.data)
+@app.route('/api/nodemcu', methods=['GET', 'POST'])
+def set_values():
+    data = request.get_json()
+    query_check_existence = """SELECT * FROM Devices WHERE IP = %s"""
+    sql_data =(data["IP"])
+    query_result = json.dumps(mysql_helper.send_query_to_db_no_response(query_check_existence, sql_data))
 
-    # load json file which contains node
-    with open('nodes.json', 'r') as myfile:
-        data = myfile.read().replace('\n', '')
-
-    loaded_data = data
-    saved_data = json2obj(loaded_data)
-    json_obj = compare_json_data(received_data, saved_data)
-
-    if json_obj:
-        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+    # if result is not empty than update the value
+    if query_result:
+        query_update_values = """UPDATE Devices SET Heat = %s, Light = %s"""
+        sql_data = (data['Temp'], data['Light'])
+        json.dumps(mysql_helper.send_query_to_db_no_response(query_update_values, sql_data))
+    # if the result is empty insert new value
     else:
-        # add json obj to string
-        saved_data.append(received_data)
-        # save json structure back to file
-        return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
-
-    # return saved_data[0].ip
-
-
-def compare_json_data(received_data, saved_data):
-    counter = 0
-    for val in saved_data:
-        counter += 1
-        if received_data.ip == val.ip:
-            return counter
-
-    return False
+        query_insert_values = """INSERT INTO Devices (Name,IP,GeraeteNummer,Heat,Light) VALUES(%s, %s, %s, %s, %s)"""
+        sql_data = ("Sensor", data['IP'], "0", data['Temp'], data['Light'])
+        json.dumps(mysql_helper.send_query_to_db_no_response(query_insert_values, sql_data))
+    return
 
 
 if __name__ == '__main__':

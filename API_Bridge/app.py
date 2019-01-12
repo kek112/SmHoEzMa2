@@ -1,57 +1,75 @@
-from flask import Flask, jsonify, request
-from collections import namedtuple
+from flask import Flask, request
 import json
+import requests
+from mysql_helper import mysql_helper
+
 
 app = Flask(__name__)
+ip = '192.168.0.2'
+port = '8000'
 
 
-def _json_object_hook(d): return namedtuple('X', d.keys())(*d.values())
+@app.route('/print_lamp_states', methods=['GET'])
+def print_lamp_states():
+    lamp_states = get_lamp_states()
+    string = '<table>'
+    for lamps in lamp_states:
+        string += "<tr><th>Lampe "+lamps+'</th></tr>'
+        for settings in lamp_states[lamps]['state']:
+            string += '<tr><td>'+str(settings)+'</td><td>'+str(lamp_states[lamps]['state'][settings])+'</td></tr>'
+    string += '</table>'
+    return string
 
 
-def json2obj(data): return json.loads(data, object_hook=_json_object_hook)
+@app.route('/update_lamp_states', methods=['GET'])
+def update_lamp_states():
+    lamp_states = get_lamp_states()
+    for lamp_number in lamp_states:
+        settings = lamp_states[lamp_number]['state']
+        name = "Lamp "+str(lamp_number)
+        write_to_db(settings['hue'], settings['sat'], settings['on'], settings['bri'],
+                    name, ip, lamp_number)
+    return 'All lamps were inserted or updated!'
 
 
-class Payload(object):
-    def __init__(self, j):
-        self.__dict__ = json.loads(j)
-
-
-@app.route("/")
-def hello():
-    return "Hello World!"
-
-
-@app.route('/test', methods=['GET', 'POST'])
-def get_tasks():
-    received_data = json2obj(request.data)
-
-    # load json file which contains node
-    with open('nodes.json', 'r') as myfile:
-        data = myfile.read().replace('\n', '')
-
-    loaded_data = data
-    saved_data = json2obj(loaded_data)
-    json_obj = compare_json_data(received_data, saved_data)
-
-    if json_obj:
-        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+def write_to_db(_hue, _saturation, _on, _brightness, _name, _ip_string, _lamp_number):
+    hue = str(_hue)
+    saturation = str(_saturation)
+    on = str(int(_on))
+    brightness = str(_brightness)
+    ip_string = str(_ip_string)
+    lamp_number = str(_lamp_number)
+    lamp_exists = is_lamp_in_db(lamp_number)
+    sql_data = (_name, ip_string, hue, saturation, on, brightness, lamp_number)
+    if lamp_exists:
+        sql = """UPDATE Devices \
+              SET Name=%s, IP=%s, Hue=%s, Saturation=%s, \
+              Switch=%s, Brightness=%s \
+              WHERE GeraeteNummer=%s"""
     else:
-        # add json obj to string
-        saved_data.append(received_data)
-        # save json structure back to file
-        return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
-
-    # return saved_data[0].ip
+        sql = """INSERT INTO Devices (Name, IP, Hue, Saturation, Switch, Brightness, GeraeteNummer) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+    mysql_helper.send_query_to_db_no_response(sql, sql_data)
 
 
-def compare_json_data(received_data, saved_data):
-    counter = 0
-    for val in saved_data:
-        counter += 1
-        if received_data.ip == val.ip:
-            return counter
+def is_lamp_in_db(lamp_number):
+    sql = """SELECT COUNT(*) AS 'num' FROM Devices WHERE GeraeteNummer=%s"""
+    result = mysql_helper.send_query_to_db(sql, (lamp_number,))
+    return bool(result[0]["num"])
 
-    return False
+
+def get_lamp_states():
+    r = requests.get('http://'+ip+':'+port+'/api/newdeveloper/lights/').json()
+    return r
+
+
+@app.route('/update_lamp', methods=['POST'])
+def update_lamp():
+    data = request.get_json()
+    payload = json.dumps({'hue': data['hue'], 'sat': data['sat'], 'on': data['on'], 'bri': data['bri']})
+    r = requests.put('http://'+ip+':'+port+'/api/newdeveloper/lights/'+str(data['num'])+'/state', data=payload)
+    write_to_db(data['hue'], data['sat'], data['on'], data['bri'], data['name'], data['ip'], data['num'])
+    return "Status-Code: " + str(r.status_code)
 
 
 if __name__ == '__main__':

@@ -1,90 +1,94 @@
-from flask import Flask, jsonify, request
-from collections import namedtuple
+from flask import Flask, request
 import json
+import mysql.connector
+from mysql_helper import mysql_helper
 
 app = Flask(__name__)
 
 
-def _json_object_hook(d): return namedtuple('X', d.keys())(*d.values())
-
-
-def json2obj(data): return json.loads(data, object_hook=_json_object_hook)
-
-
-class Payload(object):
-    def __init__(self, j):
-        self.__dict__ = json.loads(j)
-
-
 @app.route("/")
 def hello():
-    return "Hello World!"
+
+    query = """UPDATE Devices SET Name = %s WHERE IP = %s"""
+    data = ("testinsert", "1.2.3.4")
+    mysql_helper.send_query_to_db_no_response(query, data)
+    return "Hello World"
 
 
-@app.route('/test', methods=['GET', 'POST'])
-def get_tasks():
-    received_data = json2obj(request.data)
-
-    # load json file which contains node
-    with open('nodes.json', 'r') as myfile:
-        data = myfile.read().replace('\n', '')
-
-    loaded_data = data
-    saved_data = json2obj(loaded_data)
-    json_obj = compare_json_data(received_data, saved_data)
-
-    if json_obj:
-        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
-    else:
-        # add json obj to string
-        saved_data.append(received_data)
-        # save json structure back to file
-        return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
-
-    # return saved_data[0].ip
-
-
-#open nodes json and dump everthing to client
+# connect to mysql server inside docker network and get all devices return them as described in readme
+# will return whole list of devices
 @app.route('/api/alldevices', methods=['GET'])
 def return_all_devices():
+    query_get_all_devices = "SELECT * FROM Devices"
+    sql_data = ""
     try:
-        with open('../nodes.json', 'r') as myfile:
-            data = myfile.read().replace('\n', '')
-        return_json = json2obj(data)
-        return jsonify(return_json)
+        return mysql_helper.send_query_to_db_no_response(query_get_all_devices, sql_data)
     except IOError:
-        return json.dumps({'success': False, 'Errorcode': 'File could not be opened'}), 400, {'ContentType': 'application/json'}
+        return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
 
-
-@app.route('/api/device', methods=['POST'])
+@app.route('/api/device', methods=['Get','POST'])
 def return_one_devices():
     data = request.get_json()
-    device_ip = data['Ip']
+    query_specific_device = """SELECT * FROM Devices WHERE IP =%s AND GeraeteNummer = %s """
+    sql_data = ( data['IP'], data['GeraeteNummer'])
+
     try:
-        with open('../nodes.json', 'r') as myfile:
-            data = myfile.read().replace('\n', '')
-        saved_data = json2obj(data)
-        return_json = find_object_by_ip(device_ip, saved_data)
-        return jsonify(return_json)
+        return json.dumps(mysql_helper.send_query_to_db_no_response(query_specific_device, sql_data))
     except IOError:
         return json.dumps({'success': False, 'Errorcode': 'Please enter valid ip'}), 400, {'ContentType': 'application/json'}
 
 
-def find_object_by_ip(ip, saved_data):
-    for val in saved_data.Devices:
-        if val.Ip == ip:
-            return val
-        return False
+# just return all the lamps
+@app.route('/api/lamp', methods=['GET','POST'])
+def return_lamps():
+    data = request.get_json()
+    if request.method == 'GET':
+
+        query_get_lamp = """SELECT * FROM Devices WHERE GeraeteNummer != 0"""
+        sql_data = ""
+        try:
+            return json.dumps(mysql_helper.send_query_to_db_no_response(query_get_lamp, sql_data))
+        except IOError:
+            return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
+
+    if request.method == 'POST':
+        query_lamp = """UPDATE Devices SET  Colour = %s, Saturation = %s, Brightness = %s, Switch = %s WHERE IP = %s AND GeraeteNummer = %s """
+        sql_data = (data['Hue'], data['Saturation'], data['Brightness'], data['Switch'], data['IP'], data['GeraeteNummer'])
+
+        try:
+            mysql_helper.send_query_to_db_no_response(query_lamp, sql_data)
+            #
+            # TODO: API CALL FOR BRIDGE API
+            #
+            return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+        except IOError:
+            return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
 
 
-def compare_json_data(received_data, saved_data):
-    counter = 0
-    for val in saved_data:
-        counter += 1
-        if received_data.ip == val.ip:
-            return counter
+@app.route('/api/name', methods=['POST'])
+def set_name():
+    data = request.get_json()
 
-    return False
+    query_update_name = """UPDATE Devices SET Name = %s  WHERE IP = %s  AND GeraeteNummer = %s"""
+    sql_data = (data['Name'], data['IP'], data['GeraeteNummer'])
+
+    try:
+        mysql_helper.send_query_to_db_no_response(query_update_name, sql_data)
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+    except IOError:
+        return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
+
+
+# just return all the sensor values
+@app.route('/api/sensor', methods=['GET'])
+def return_sensors():
+
+    query_get_sensor = """SELECT * FROM Devices WHERE GeraeteNummer = 0 """
+    sql_data = ""
+    try:
+        return json.dumps(mysql_helper.send_query_to_db_no_response(query_get_sensor, sql_data))
+    except IOError:
+        return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
 
 
 if __name__ == '__main__':
