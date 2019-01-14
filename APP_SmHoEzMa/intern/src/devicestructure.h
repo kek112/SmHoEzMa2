@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QHostAddress>
-#include <QtXML>
+#include <QtXml>
 #include <QGeoCoordinate>
 
 class CDeviceStructure

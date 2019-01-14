@@ -15,6 +15,14 @@ Rectangle {
     property var switchObject: null
     property var homecomingObject: null
 
+    property real lastBrightnessValue: 0
+    property real lastSaturationValue: 0
+    property real lastHueValue: 0
+
+    property var brightnessObject: null
+    property var saturationObject: null
+    property var hueObject: null
+
     color: "white"
     border.color: "black"
     border.width: 0
@@ -121,7 +129,6 @@ Rectangle {
         ]
       */
 
-    //TODO: connect settings to send the changes made in app to api
     //NOTE: rename switch to On/Off to make meaning clearer?
     function createContent() {
 
@@ -164,6 +171,7 @@ Rectangle {
                     settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Switch {}', contentLayout);
                     settingsObject.checked = contentObject[option]
                     switchObject = settingsObject
+                    settingsObject.clicked.connect(switchClicked)
                     //Layout information
                     settingsObject.Layout.column = 1
                     settingsObject.Layout.row = itemCounter
@@ -186,6 +194,14 @@ Rectangle {
                     settingsObject.Layout.fillHeight = true
                     settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
+                    if(option == "Saturation") {
+                        settingsObject.pressedChanged.connect(saturationPressedChanged)
+                        saturationObject = settingsObject
+                    } else {
+                        settingsObject.pressedChanged.connect(brightnessPressedChanged)
+                        brightnessObject = settingsObject
+                    }
+
                     itemCounter++
                 }
                 else if(option == "Hue") {
@@ -194,12 +210,15 @@ Rectangle {
                     settingsObject.to = 65535;
                     settingsObject.stepSize = 1
                     settingsObject.value = contentObject[option];
+                    settingsObject.pressedChanged.connect(huePressedChanged)
                     //Layout information
                     settingsObject.Layout.column = 1
                     settingsObject.Layout.row = itemCounter
                     settingsObject.Layout.fillWidth = true
                     settingsObject.Layout.fillHeight = true
                     settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
+
+                    hueObject = settingsObject
 
                     itemCounter++
                 }
@@ -227,6 +246,47 @@ Rectangle {
             settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
             itemCounter++
+        }
+    }
+
+    //TODO: replace log with sending data
+    /*
+[POST]
+{
+    "IP":"1.2.3.4",
+    "GeraeteNummer":"2",
+    "Hue":"50",
+    "Saturation":"05",
+    "Brightness":"50",
+    "Switch":"1"
+}
+      */
+    //functions for the ui elements when they are changed
+    function switchClicked() {
+        var contentObject = JSON.parse(contentJson)
+
+        var jsonObject = new Object()
+        jsonObject.IP = contentObject.IP
+        jsonObject.DeviceID = contentObject.DeviceID
+        jsonObject.Switch = switchObject.checked
+
+
+        console.log(JSON.stringify(jsonObject));
+    }
+
+    function saturationPressedChanged() {
+        if(saturationObject.pressed == false) {
+            console.log("saturation:", saturationObject.value)
+        }
+    }
+    function brightnessPressedChanged() {
+        if(brightnessObject.pressed == false) {
+            console.log("brightness:", brightnessObject.value)
+        }
+    }
+    function huePressedChanged() {
+        if(hueObject.pressed == false) {
+            console.log("HUE:", hueObject.value)
         }
     }
 

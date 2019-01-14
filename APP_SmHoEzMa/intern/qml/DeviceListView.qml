@@ -109,17 +109,12 @@ Item {
     PositionSource {
         id: positionSource
         active: true
-        Component.onCompleted:  {
-            var currentPosition = positionSource.position.coordinate;
-            map.center = currentPosition;
-            marker.coordinate = currentPosition;
-        }
     }
 
     //activate worker thread every 5s
     Timer {
         interval: 5000; running: true; repeat: true
-        onTriggered: worker.sendMessage()
+        onTriggered: worker.message(null)
     }
 
     //function is activatet in a thread to make sure it doesnt block the app
@@ -143,44 +138,3 @@ Item {
     }
 
 }
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-    property var component;
-    property var device;
-
-    //this function loads the component contained in the file "AccordionElement.qml"
-    function createDeviceObjects(fileName, settings) {
-        component = Qt.createComponent(fileName);
-        if (component.status == Component.Ready) {
-            finishCreation();
-        }
-        else {
-            component.statusChanged.connect(finishCreation(settings));
-        }
-    }
-    //this function actually creates the object from the loaded component
-    function finishCreation(settings) {
-        if (component.status == Component.Ready) {
-            console.log(devices.length)
-            // apperantly this function runs multiple times, for an unknown reason the first times it runs devices.lenght = 0,
-            //the second time it runs it uses the actual value and works as it should
-            device = component.createObject(mainLayout, settings);
-
-            if (device == null) {
-                // Error Handling
-                console.log("Error creating object");
-            }
-            else {
-                devices.push(device)
-                console.log(devices.length)
-                currentActiveElement = devices.length-1
-            }
-        } else if (component.status == Component.Error) {
-            // Error Handling
-            console.log("Error loading component:", component.errorString());
-        }
-    }
-    */
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

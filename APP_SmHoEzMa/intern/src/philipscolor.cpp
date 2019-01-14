@@ -1,5 +1,5 @@
-#include "Philipscolor.h"
-#include "Philips.h"
+#include "philipscolor.h"
+#include "philips.h"
 #include <QNetworkAccessManager>
 #include <QJsonObject>
 #include <QJsonDocument>

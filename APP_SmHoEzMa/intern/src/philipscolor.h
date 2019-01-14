@@ -1,6 +1,6 @@
 #ifndef PhilipsCOLOR_H
 #define PhilipsCOLOR_H
-#include "Philips.h"
+#include "philips.h"
 
 class CPhilipsColor : public CPhilips
 {

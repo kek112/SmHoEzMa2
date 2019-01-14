@@ -4,7 +4,7 @@ import QtQuick.Controls 2.4
 
 //App Menu which contains all the menu buttons and the coresponding
 Drawer {
-    Keys.forwardTo: parent
+//    Keys.forwardTo: parent
     //    property string menuColor: "red"
     property var mainItem: mainViewButton.stackItem
     property bool isOpen: false

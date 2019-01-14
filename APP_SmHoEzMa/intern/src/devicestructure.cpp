@@ -1,7 +1,7 @@
 #include "devicestructure.h"
 
 #include <QStandardPaths>
-#include <QtXML>
+#include <QtXml>
 
 ///
 /// This class represents the structure of devices how they will be handled in the app and will be saved

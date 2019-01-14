@@ -1,6 +1,6 @@
 #ifndef PhilipsLUX_H
 #define PhilipsLUX_H
-#include "Philips.h"
+#include "philips.h"
 
 class CPhilipsLux : public CPhilips
 {
