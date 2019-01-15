@@ -270,23 +270,51 @@ Rectangle {
         jsonObject.DeviceID = contentObject.DeviceID
         jsonObject.Switch = switchObject.checked
 
-
         console.log(JSON.stringify(jsonObject));
+        //xhttp.open("POST", "IP from settings", true);
+        //xhttp.send(JSON.stringify(jsonObject));
     }
 
     function saturationPressedChanged() {
         if(saturationObject.pressed == false) {
-            console.log("saturation:", saturationObject.value)
+            var contentObject = JSON.parse(contentJson)
+
+            var jsonObject = new Object()
+            jsonObject.IP = contentObject.IP
+            jsonObject.DeviceID = contentObject.DeviceID
+            jsonObject.Saturation = saturationObject.value
+
+            console.log(JSON.stringify(jsonObject));
+            //xhttp.open("POST", "IP from settings", true);
+            //xhttp.send(JSON.stringify(jsonObject));
         }
     }
     function brightnessPressedChanged() {
         if(brightnessObject.pressed == false) {
-            console.log("brightness:", brightnessObject.value)
+            var contentObject = JSON.parse(contentJson)
+
+            var jsonObject = new Object()
+            jsonObject.IP = contentObject.IP
+            jsonObject.DeviceID = contentObject.DeviceID
+            jsonObject.Brightness = brightnessObject.value
+
+            console.log(JSON.stringify(jsonObject));
+            //xhttp.open("POST", "IP from settings", true);
+            //xhttp.send(JSON.stringify(jsonObject));
         }
     }
     function huePressedChanged() {
         if(hueObject.pressed == false) {
-            console.log("HUE:", hueObject.value)
+            var contentObject = JSON.parse(contentJson)
+
+            var jsonObject = new Object()
+            jsonObject.IP = contentObject.IP
+            jsonObject.DeviceID = contentObject.DeviceID
+            jsonObject.Hue = hueObject.value
+
+            console.log(JSON.stringify(jsonObject));
+            //xhttp.open("POST", "IP from settings", true);
+            //xhttp.send(JSON.stringify(jsonObject));
         }
     }
 
