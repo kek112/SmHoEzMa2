@@ -1,13 +1,12 @@
 from flask import Flask, request
 import json
-import mysql.connector
 from mysql_helper import mysql_helper
 
 
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route("/api")
 def hello():
     return "Hello World!"
 
@@ -16,8 +15,8 @@ def hello():
 def set_values():
     data = request.get_json()
     query_check_existence = """SELECT * FROM Devices WHERE IP = %s"""
-    sql_data =(data["IP"])
-    query_result = json.dumps(mysql_helper.send_query_to_db_no_response(query_check_existence, sql_data))
+    sql_data = (data["IP"])
+    query_result = mysql_helper.send_query_to_db(query_check_existence, sql_data)
 
     # if result is not empty than update the value
     if query_result:
