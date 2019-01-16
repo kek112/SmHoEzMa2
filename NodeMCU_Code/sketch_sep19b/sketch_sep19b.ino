@@ -25,7 +25,7 @@ const char* pw   = "*pass123";
 void setup()
 {
 
-  WifiCOnnection();
+  wifiConnection();
   
   pinMode(D1, OUTPUT);
   pinMode(D2, OUTPUT);
@@ -38,15 +38,37 @@ void setup()
 
 void loop()
 {
-  WifiCOnnection();
+  wifiConnection();
   //Serial.print("LUX: ");
   Serial.println(readPhoto());
-  AnalogRead();
-  delay(500);
+  Serial.println(readTemp());
+  sendToApi(readPhoto(),readTemp());
+  delay(1000);
 
 }
 
-void WifiCOnnection()
+void sendToApi(float light, int temp)
+{
+  StaticJsonBuffer<300> JSONbuffer;
+  JsonObject& JSONencoder = JSONbuffer.createObject();
+  
+  JSONencoder["IP"] = WiFi.localIP().toString();
+  JSONencoder["Temp"] = String(temp);
+  JSONencoder["Light"] = String(light);
+
+  char JSONmessageBuffer[300];
+  JSONencoder.prettyPrintTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));
+  //Serial.println(JSONmessageBuffer);
+  
+  HTTPClient http; //Declare object of class HTTPClient
+  http.begin("http://192.168.178.30:5000/api/nodemcu"); //Specify request destination
+  http.addHeader("Content-Type", "application/json"); //Specify content-type header
+  
+  int httpCode = http.POST(JSONmessageBuffer); //Send the request
+  String payload = http.getString(); //Get the response payload
+  http.end(); //Close connection
+}
+void wifiConnection()
 {
   // connect to wifi
   WiFi.begin(ssid, pw);
@@ -74,7 +96,7 @@ float readPhoto()
 
 }
 
-int AnalogRead()
+int readTemp()
 {
   digitalWrite(D1, LOW);
   digitalWrite(D2, LOW);
@@ -89,9 +111,8 @@ int AnalogRead()
   temperature = (1 / (A + (B * log(Rth)) + (C * pow((log(Rth)),3))));   // Temperature in kelvin
 
   temperature = temperature - 273.15;  // Temperature in degree celsius
-  Serial.print("Temperature = ");
-  Serial.print(temperature);
-  Serial.println(" degree celsius");
+  return temperature;
+  
   delay(500);
 
 }
