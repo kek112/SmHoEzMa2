@@ -39,6 +39,8 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db
     links:
       - db
     ports:
