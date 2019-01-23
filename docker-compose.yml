@@ -22,7 +22,7 @@ services:
 
 # DATABASE
   db:
-    image: mysql
+    image: mysql:5.7
     environment:
       MYSQL_USER: user
       MYSQL_PASSWORD: test
@@ -31,10 +31,11 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./mysql/sql_scripts/:/docker-entrypoint-initdb.d
-      - ./mysql/data:/var/lib/mysql/
+      - mysql/sql_scripts/:/docker-entrypoint-initdb.d
+      - mysql/data:/var/lib/mysql/
     networks:
       - default
+    command: --disable-partition-engine-check
 
 
   phpmyadmin:

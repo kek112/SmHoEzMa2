@@ -2,7 +2,7 @@ version: '3'
 services:
 # DATABASE
   db:
-    image: mysql
+    image: mysql:5.7
     environment:
       MYSQL_USER: user
       MYSQL_PASSWORD: test
@@ -15,7 +15,7 @@ services:
     - ./mysql/dev_data:/var/lib/mysql/
     networks:
     - default
-
+    command: --disable-partition-engine-check
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
