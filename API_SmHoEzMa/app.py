@@ -3,7 +3,7 @@ import json
 from mysql_helper import mysql_helper
 
 app = Flask(__name__)
-
+api_url = 'http://api_bridge:5001/update_lamp'
 
 @app.route("/")
 def hello():
@@ -60,6 +60,8 @@ def return_lamps():
             #
             # TODO: API CALL FOR BRIDGE API
             #
+            create_row_data = {'hue': data['heu'],'sat':data['sat'],'on':data['on'],'bri':data['bri'],'name':data['name'],'num':data['GeraeteNummer']}
+            r=request.post(api_url,data=create_row_data)
             return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
         except IOError:
             return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
