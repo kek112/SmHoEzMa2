@@ -61,7 +61,7 @@ void sendToApi(float light, int temp)
   //Serial.println(JSONmessageBuffer);
   
   HTTPClient http; //Declare object of class HTTPClient
-  http.begin("http://192.168.178.30:5000/api/nodemcu"); //Specify request destination
+  http.begin("http://192.168.178.30:5002/api/nodemcu"); //Specify request destination
   http.addHeader("Content-Type", "application/json"); //Specify content-type header
   
   int httpCode = http.POST(JSONmessageBuffer); //Send the request
