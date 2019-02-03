@@ -57,11 +57,10 @@ def return_lamps():
 
         try:
             mysql_helper.send_query_to_db_no_response(query_lamp, sql_data)
-            #
-            # TODO: API CALL FOR BRIDGE API
-            #
+
             create_row_data = {'hue': data['heu'],'sat':data['sat'],'on':data['on'],'bri':data['bri'],'name':data['name'],'num':data['GeraeteNummer']}
             r=request.post(api_url,data=create_row_data)
+
             return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
         except IOError:
             return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
