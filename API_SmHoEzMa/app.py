@@ -1,9 +1,11 @@
 from flask import Flask, request
 import json
+import requests
 from mysql_helper import mysql_helper
 
 app = Flask(__name__)
-api_url = 'http://api_bridge:5001/update_lamp'
+api_url = 'http://192.168.178.30:5001/update_lamp'
+api_url_lamp_update = 'http://192.168.178.30:5001/update_lamp_states'
 
 @app.route("/")
 def hello():
@@ -21,6 +23,7 @@ def return_all_devices():
     query_get_all_devices = """SELECT * FROM Devices"""
     sql_data = ""
     try:
+        requests.get(api_url_lamp_update)
         return json.dumps(mysql_helper.send_query_to_db(query_get_all_devices, sql_data))
     except IOError:
         return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
@@ -52,14 +55,18 @@ def return_lamps():
             return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
 
     if request.method == 'POST':
-        query_lamp = """UPDATE Devices SET  Colour = %s, Saturation = %s, Brightness = %s, Switch = %s WHERE IP = %s AND GeraeteNummer = %s """
+        query_lamp = """UPDATE Devices SET  Hue = %s, Saturation = %s, Brightness = %s, Switch = %s WHERE IP = %s AND GeraeteNummer = %s """
         sql_data = (data['Hue'], data['Saturation'], data['Brightness'], data['Switch'], data['IP'], data['GeraeteNummer'])
 
         try:
             mysql_helper.send_query_to_db_no_response(query_lamp, sql_data)
 
-            create_row_data = {'hue': data['heu'],'sat':data['sat'],'on':data['on'],'bri':data['bri'],'name':data['name'],'num':data['GeraeteNummer']}
-            r=request.post(api_url,data=create_row_data)
+            create_row_data = json.dumps({'hue': data['Hue'], 'sat': data['Saturation'], 'on': data['Switch'], 'bri': data['Brightness'], 'num': data['GeraeteNummer']})
+
+            headers = {'content-type': 'application/json'}
+
+            r = requests.post(
+                api_url, headers=headers, data=create_row_data)
 
             return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
         except IOError:
@@ -93,4 +100,4 @@ def return_sensors():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=5003)

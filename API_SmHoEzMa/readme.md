@@ -12,7 +12,7 @@ Brightness:     (INT)       0-254   Sättigung für Hue und Lux Lampen
 Switch          (INT)       0/1     Schaltet Hue und Lux Lampen ein/aus
 ```
 
-GeräteIP:5002/api/alldevices  
+GeräteIP:5003/api/alldevices  
 
 Ruft alle verfügbaren Geräte aus der MySQL Db ab.
 ```
@@ -45,7 +45,7 @@ Ruft alle verfügbaren Geräte aus der MySQL Db ab.
 ]
 ```
 
-GeräteIP:5002/api/device  
+GeräteIP:5003/api/device  
 
 Ruft Daten zu spezifischen Gerät auf. Sensoren haben dabei immer die GeraeteNummer 0, da diese nur für Philips Hue Bridge
 eine Rolle spielt.
@@ -73,7 +73,7 @@ eine Rolle spielt.
 ]
 ```
 
-GeräteIP:5002/api/lamp 
+GeräteIP:5003/api/lamp 
 
 GET Request lässt alle Lampen zurückgeben, der Indikator für eine Lmape ist das sie die GeraeteNummer nicht auf 0 hat.
 POST Request setzt die Farbwerte auf die gewünschten Werte.
@@ -128,7 +128,7 @@ POST Request setzt die Farbwerte auf die gewünschten Werte.
     }
 ]
 ```
-GeräteIP:5002/api/name 
+GeräteIP:5003/api/name 
 
 Setzt den Namen des Geräates welches mit der IP und GeräteNummer in Verbindung steht
 
@@ -141,7 +141,7 @@ Setzt den Namen des Geräates welches mit der IP und GeräteNummer in Verbindung
 }
 ```
 
-GeräteIP:5002/api/sensor 
+GeräteIP:5003/api/sensor 
 
 Gibt alle Sensoren zurück, werden durch Geraetenummer 0 gekennzeichnet.
 
