@@ -68,7 +68,7 @@ Item {
     function loadDevices() {
         deviceModel.clear()
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", apiIpAddress, false ); // false for synchronous request
+        xmlHttp.open( "GET", apiIpAddress+":5003/api/alldevices", false ); // false for synchronous request
         xmlHttp.send( null );
         var json = xmlHttp.responseText;
 

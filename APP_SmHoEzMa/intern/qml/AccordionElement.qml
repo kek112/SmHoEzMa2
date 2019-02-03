@@ -271,8 +271,6 @@ Rectangle {
         jsonObject.Name             = contentObject.Name
         jsonObject.GeraeteNummer    = contentObject.GeraeteNummer
         //Device Settings
-        jsonObject.Heat             = null
-        jsonObject.Light            = null
         jsonObject.Switch           = switchObject.checked
         jsonObject.Hue              = hueObject.value
         jsonObject.Saturation       = saturationObject.value
@@ -281,7 +279,7 @@ Rectangle {
 
         console.log(JSON.stringify(jsonObject));
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("POST", apiIpAddress, true);
+        xmlHttp.open("POST", apiIpAddress+":5003/api/lamp", true);
         xmlHttp.send(JSON.stringify(jsonObject));
     }
 
