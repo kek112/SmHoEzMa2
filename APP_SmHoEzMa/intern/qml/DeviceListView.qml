@@ -67,36 +67,42 @@ Item {
 
     function loadDevices() {
         deviceModel.clear()
-        var obj = JSON.parse('
-        [
-           {
-              "DeviceID":1,
-              "Name":"Außen Temperatur",
-              "IP":"test",
-              "GeraeteNummer":2,
-              "Heat":10,
-              "Light":null,
-              "Colour":null,
-              "Saturation":null,
-              "Switch":null,
-              "Brightness":null
-           },
-           {
-              "DeviceID":2,
-              "Name":"Flur Lampe",
-              "IP":"1.2.3.4",
-              "GeraeteNummer":2,
-              "Heat":null,
-              "Light":null,
-              "Hue":10000,
-              "Saturation":100,
-              "Switch":false,
-              "Brightness":100
-           }
-        ]
-        ');
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", apiIpAddress, false ); // false for synchronous request
+        xmlHttp.send( null );
+        var json = xmlHttp.responseText;
+
+        var obj = JSON.parse(json)
+//        var obj = JSON.parse('
+//        [
+//           {
+//              "DeviceID":1,
+//              "Name":"Außen Temperatur",
+//              "IP":"test",
+//              "GeraeteNummer":2,
+//              "Heat":10,
+//              "Light":null,
+//              "Colour":null,
+//              "Saturation":null,
+//              "Switch":null,
+//              "Brightness":null
+//           },
+//           {
+//              "DeviceID":2,
+//              "Name":"Flur Lampe",
+//              "IP":"1.2.3.4",
+//              "GeraeteNummer":2,
+//              "Heat":null,
+//              "Light":null,
+//              "Hue":10000,
+//              "Saturation":100,
+//              "Switch":false,
+//              "Brightness":100
+//           }
+//        ]
+//        ');
         for (var i = 0; i < obj.length; i++) {
-            deviceModel.append({"elementTitle": obj[i].Name, "content": JSON.stringify(obj[i])})
+            deviceModel.append({"elementTitle": obj[i].Name, "content": JSON.stringify(obj[i]), "apiIpAddress": apiIpAddress})
         }
     }
     function sleepAllDevices() {

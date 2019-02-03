@@ -10,6 +10,7 @@ Rectangle {
     property bool colabsed: false
     property string title: "Title"
     property string contentJson: ""
+    property string apiIpAddress: ""
 
     property int itemCounter: 0
     property var switchObject: null
@@ -161,7 +162,6 @@ Rectangle {
                     //Layout information
                     settingsObject.Layout.column = 1
                     settingsObject.Layout.row = itemCounter
-        //            settingsObject.Layout.fillWidth = true
                     settingsObject.Layout.fillHeight = true
                     settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
@@ -171,11 +171,10 @@ Rectangle {
                     settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Switch {}', contentLayout);
                     settingsObject.checked = contentObject[option]
                     switchObject = settingsObject
-                    settingsObject.clicked.connect(switchClicked)
+                    settingsObject.clicked.connect(settingsChanged)
                     //Layout information
                     settingsObject.Layout.column = 1
                     settingsObject.Layout.row = itemCounter
-        //            settingsObject.Layout.fillWidth = true
                     settingsObject.Layout.fillHeight = true
                     settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
@@ -187,6 +186,7 @@ Rectangle {
                     settingsObject.to = 254;
                     settingsObject.stepSize = 1
                     settingsObject.value = contentObject[option];
+                    settingsObject.pressedChanged.connect(settingsChanged)
                     //Layout information
                     settingsObject.Layout.column = 1
                     settingsObject.Layout.row = itemCounter
@@ -195,10 +195,8 @@ Rectangle {
                     settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
                     if(option == "Saturation") {
-                        settingsObject.pressedChanged.connect(saturationPressedChanged)
                         saturationObject = settingsObject
                     } else {
-                        settingsObject.pressedChanged.connect(brightnessPressedChanged)
                         brightnessObject = settingsObject
                     }
 
@@ -210,7 +208,7 @@ Rectangle {
                     settingsObject.to = 65535;
                     settingsObject.stepSize = 1
                     settingsObject.value = contentObject[option];
-                    settingsObject.pressedChanged.connect(huePressedChanged)
+                    settingsObject.pressedChanged.connect(settingsChanged)
                     //Layout information
                     settingsObject.Layout.column = 1
                     settingsObject.Layout.row = itemCounter
@@ -231,8 +229,6 @@ Rectangle {
             //Layout information
             nameObject.Layout.column = 0
             nameObject.Layout.row = itemCounter
-//              nameObject.Layout.fillWidth = true
-//              nameObject.Layout.fillHeight = true
             nameObject.horizontalAlignment = Text.AlignHCenter
 
             settingsObject = Qt.createQmlObject('import QtQuick 2.0;import QtQuick.Controls 2.4; Switch {}', contentLayout);
@@ -241,7 +237,6 @@ Rectangle {
             //Layout information
             settingsObject.Layout.column = 1
             settingsObject.Layout.row = itemCounter
-//              settingsObject.Layout.fillWidth = true
             settingsObject.Layout.fillHeight = true
             settingsObject.Layout.alignment = Qt.AlignRight | Qt.AlignVCenter
 
@@ -253,69 +248,41 @@ Rectangle {
     /*
 [POST]
 {
-    "IP":"1.2.3.4",
-    "GeraeteNummer":"2",
-    "Hue":"50",
-    "Saturation":"05",
-    "Brightness":"50",
-    "Switch":"1"
+  "DeviceID":1,
+  "Name":"Außen Temperatur",
+  "IP":"test",
+  "GeraeteNummer":2,
+  "Heat":10,
+  "Light":null,
+  "Hue":null,
+  "Saturation":null,
+  "Switch":null,
+  "Brightness":null
 }
       */
     //functions for the ui elements when they are changed
-    function switchClicked() {
+    function settingsChanged() {
         var contentObject = JSON.parse(contentJson)
 
         var jsonObject = new Object()
-        jsonObject.IP = contentObject.IP
-        jsonObject.DeviceID = contentObject.DeviceID
-        jsonObject.Switch = switchObject.checked
+        //Device Info
+        jsonObject.IP               = contentObject.IP
+        jsonObject.DeviceID         = contentObject.DeviceID
+        jsonObject.Name             = contentObject.Name
+        jsonObject.GeraeteNummer    = contentObject.GeraeteNummer
+        //Device Settings
+        jsonObject.Heat             = null
+        jsonObject.Light            = null
+        jsonObject.Switch           = switchObject.checked
+        jsonObject.Hue              = hueObject.value
+        jsonObject.Saturation       = saturationObject.value
+        jsonObject.Brightness       = brightnessObject.value
+
 
         console.log(JSON.stringify(jsonObject));
-        //xhttp.open("POST", "IP from settings", true);
-        //xhttp.send(JSON.stringify(jsonObject));
-    }
-
-    function saturationPressedChanged() {
-        if(saturationObject.pressed == false) {
-            var contentObject = JSON.parse(contentJson)
-
-            var jsonObject = new Object()
-            jsonObject.IP = contentObject.IP
-            jsonObject.DeviceID = contentObject.DeviceID
-            jsonObject.Saturation = saturationObject.value
-
-            console.log(JSON.stringify(jsonObject));
-            //xhttp.open("POST", "IP from settings", true);
-            //xhttp.send(JSON.stringify(jsonObject));
-        }
-    }
-    function brightnessPressedChanged() {
-        if(brightnessObject.pressed == false) {
-            var contentObject = JSON.parse(contentJson)
-
-            var jsonObject = new Object()
-            jsonObject.IP = contentObject.IP
-            jsonObject.DeviceID = contentObject.DeviceID
-            jsonObject.Brightness = brightnessObject.value
-
-            console.log(JSON.stringify(jsonObject));
-            //xhttp.open("POST", "IP from settings", true);
-            //xhttp.send(JSON.stringify(jsonObject));
-        }
-    }
-    function huePressedChanged() {
-        if(hueObject.pressed == false) {
-            var contentObject = JSON.parse(contentJson)
-
-            var jsonObject = new Object()
-            jsonObject.IP = contentObject.IP
-            jsonObject.DeviceID = contentObject.DeviceID
-            jsonObject.Hue = hueObject.value
-
-            console.log(JSON.stringify(jsonObject));
-            //xhttp.open("POST", "IP from settings", true);
-            //xhttp.send(JSON.stringify(jsonObject));
-        }
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("POST", apiIpAddress, true);
+        xmlHttp.send(JSON.stringify(jsonObject));
     }
 
     //check if the device can be switch off if yes do so
