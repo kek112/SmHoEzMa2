@@ -48,57 +48,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += qtc_runnable
 
 SOURCES += \
-        intern/src/main.cpp \
-        intern/src/mainwindow.cpp \
-    intern/src/pingmodel.cpp \
-    intern/src/androidsensor.cpp \
-    intern/src/devicestructure.cpp \
-    intern/src/philips.cpp \
-    intern/src/philipscolor.cpp \
-    intern/src/philipsLux.cpp \
-    intern/src/humiditysensor.cpp \
-    intern/src/aboutview.cpp \
-    intern/src/adddeviceview.cpp \
-    intern/src/appheader.cpp \
-    intern/src/closemenueventfilter.cpp \
-    intern/src/devicelistview.cpp \
-    intern/src/mainview.cpp \
-    intern/src/menubar.cpp \
-    intern/tests/tst_Philips.cpp \
-    intern/src/tempereratursensor.cpp \
-    intern/src/custombutton.cpp \
-    intern/src/deviceview.cpp \
-    intern/src/switchwidget.cpp \
-    intern/src/mapthread.cpp \
-    intern/src/customcolordialog.cpp \
-    intern/src/mapview.cpp \
-    intern/src/settings.cpp
+        intern/src/main.cpp
 
-HEADERS += \
-        intern/src/mainwindow.h \
-    intern/src/pingmodel.h \
-    intern/src/androidsensor.h \
-    intern/src/devicestructure.h \
-    intern/src/philips.h \
-    intern/src/philipscolor.h \
-    intern/src/philipsLux.h \
-    intern/src/humiditysensor.h \
-    intern/src/aboutview.h \
-    intern/src/adddeviceview.h \
-    intern/src/appheader.h \
-    intern/src/closemenueventfilter.h \
-    intern/src/devicelistview.h \
-    intern/src/mainview.h \
-    intern/src/menubar.h \
-    intern/tests/tst_Philips.h \
-    intern/src/tempereratursensor.h \
-    intern/src/custombutton.h \
-    intern/src/deviceview.h \
-    intern/src/switchwidget.h \
-    intern/src/mapthread.h \
-    intern/src/customcolordialog.h \
-    intern/src/mapview.h \
-    intern/src/settings.h
 
 include(Project_Compile_Settings_Sahm.pri)
 
