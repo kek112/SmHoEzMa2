@@ -67,11 +67,32 @@ Item {
 
     function loadDevices() {
         deviceModel.clear()
+        var url = "http://"+apiIpAddress+":5003/api/alldevices";
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", apiIpAddress+":5003/api/alldevices", false ); // false for synchronous request
-        xmlHttp.send( null );
+        xmlHttp.open( "GET", url, false ); // false for synchronous request
+        xmlHttp.send();
         var json = xmlHttp.responseText;
 
+//                var http = new XMLHttpRequest()
+//                var params = "num=22&num2=333";
+//                http.open("GET", url, true);
+
+//                // Send the proper header information along with the request
+//                http.setRequestHeader("Content-type", "application/json");
+//                //http.setRequestHeader("Content-length", params.length);
+//                http.setRequestHeader("Connection", "close");
+
+//                http.onreadystatechange = function() { // Call a function when the state changes.
+//                            if (http.readyState == 4) {
+//                                if (http.status == 200) {
+//                                    console.log("ok")
+//                                } else {
+//                                    console.log("error: " + http.status)
+//                                }
+//                            }
+//                        }
+//                //http.send(params);
+//        var json = http.responseText;
         var obj = JSON.parse(json)
 //        var obj = JSON.parse('
 //        [
