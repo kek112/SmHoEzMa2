@@ -9,6 +9,7 @@ Item {
     //forwards the properties to the AccordionElement so that this Object and the AccordionElement can be used in the same Way
     property string title: "Title"
     property string contentJson: ""
+    property string apiIpAddress: ""
     height: element.height
 
 
@@ -16,6 +17,7 @@ Item {
         id: element
         title: root.title
         contentJson: root.contentJson
+        apiIpAddress: root.apiIpAddress
         width: root.width
     }
 

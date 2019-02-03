@@ -267,20 +267,21 @@ Rectangle {
         var jsonObject = new Object()
         //Device Info
         jsonObject.IP               = contentObject.IP
-        jsonObject.DeviceID         = contentObject.DeviceID
-        jsonObject.Name             = contentObject.Name
-        jsonObject.GeraeteNummer    = contentObject.GeraeteNummer
+        jsonObject.GeraeteNummer    = contentObject.GeraeteNummer.toString()
         //Device Settings
-        jsonObject.Switch           = switchObject.checked
-        jsonObject.Hue              = hueObject.value
-        jsonObject.Saturation       = saturationObject.value
-        jsonObject.Brightness       = brightnessObject.value
-
+        jsonObject.Switch           = (switchObject.checked ? 1 : 0).toString()
+        jsonObject.Hue              = hueObject.value.toString()
+        jsonObject.Saturation       = saturationObject.value.toString()
+        jsonObject.Brightness       = brightnessObject.value.toString()
+//{"IP":"192.168.178.30","GeraeteNummer":"2","Hue":"160","Saturation":"100","Brightness":"20","Switch":"1"}
 
         console.log(JSON.stringify(jsonObject));
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("POST", apiIpAddress+":5003/api/lamp", true);
-        xmlHttp.send(JSON.stringify(jsonObject));
+        var url = "http://"+apiIpAddress+":5003/api/lamp"
+        xmlHttp.open("POST", url, true);
+        xmlHttp.setRequestHeader("content-type", "application/json")
+        xmlHttp.send(JSON.stringify((jsonObject)));
+        console.log(xmlHttp.statusText);
     }
 
     //check if the device can be switch off if yes do so

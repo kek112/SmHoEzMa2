@@ -5,7 +5,7 @@ import QtLocation 5.6
 import QtPositioning 5.6
 
 Item {
-    id: test
+    id: root
     property var devices: []
     property int currentActiveElement: 0
     property int buttonSize: 48
@@ -47,6 +47,7 @@ Item {
             delegate: AccordionElementWShadow {
                 title: elementTitle
                 contentJson: content
+                apiIpAddress: ipAddress
                 width: mainScrollView.width
 
             }
@@ -123,7 +124,7 @@ Item {
 //        ]
 //        ');
         for (var i = 0; i < obj.length; i++) {
-            deviceModel.append({"elementTitle": obj[i].Name, "content": JSON.stringify(obj[i]), "apiIpAddress": apiIpAddress})
+            deviceModel.append({"elementTitle": obj[i].Name, "content": JSON.stringify(obj[i]), "ipAddress": apiIpAddress})
         }
     }
     function sleepAllDevices() {
