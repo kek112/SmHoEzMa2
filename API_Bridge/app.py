@@ -5,7 +5,7 @@ from mysql_helper import mysql_helper
 
 
 app = Flask(__name__)
-ip = '192.168.0.2'
+ip = '192.168.178.30'
 port = '8000'
 
 
@@ -66,11 +66,11 @@ def get_lamp_states():
 @app.route('/update_lamp', methods=['POST'])
 def update_lamp():
     data = request.get_json()
-    payload = json.dumps({'hue': data['hue'], 'sat': data['sat'], 'on': data['on'], 'bri': data['bri']})
+    payload = json.dumps({'hue': int(data['hue']), 'sat': int(data['sat']), 'on': (False if data['on'] == "0" else True), 'bri': int(data['bri'])})
     r = requests.put('http://'+ip+':'+port+'/api/newdeveloper/lights/'+str(data['num'])+'/state', data=payload)
-    write_to_db(data['hue'], data['sat'], data['on'], data['bri'], data['name'], data['ip'], data['num'])
+    #write_to_db(data['hue'], data['sat'], data['on'], data['bri'], data['name'], data['ip'], data['num'])
     return "Status-Code: " + str(r.status_code)
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=5001)
