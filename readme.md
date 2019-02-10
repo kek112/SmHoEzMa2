@@ -1,7 +1,11 @@
 ## Mobile Computing 2 Projekt SmHoEzMa 2.0
+
+Dieses Programm ist im Rahmen der Lehrveranstaltung Mobile Computing 2 entstanden. Es soll ein Beispiel dafür geben 
+wie eine grundlegendeine Microservice Struktur aufgebaut werden kann. Dafür werden unter anderen Docker, Python sowie QT
+/QML genutzt. 
+
 #### Start der Umgebung 
-Um das Projekt zu starten ist es notwendig, dass sowohl Docker als auch Docker-Compose installiert sind 
-(Docker-Compose ist in Docker unter Windows enthalten). 
+Um das Projekt zu starten ist es notwendig, dass sowohl Docker als auch Docker-Compose installiert sind.
 Nachdem das Projekt gecloned wurde wird im Verzeichnis, welches die docker-compose.yml beinhaltet, "docker-compose up"
 ausgeführt. Empfehlung ist das "docker-compose up -d" ausgeführt wird, um diesen als Deamon zu starten und keine Konsolen 
 Logs zu erhalten.
@@ -10,6 +14,17 @@ Logs zu erhalten.
 Zum Beenden der Anwendung muss zuerst "Strg+c" gerdückt werden und danach "docker-compose down" in der Konsole eingegeben
  werden, um das erzeugte Docker Netzwerk und die Images zu beenden. 
 
+
+#### API Dokumentationen
+
+Dies soll einer Übersicht bieten welche Links zu allen Dokumentationen für jedes EInzelteil aus welchem diese Projekt 
+besteht
+
+- [API_Bridge](/API_Bridge/readme.md)
+- [API_NodeMCU](/API_NodeMCU/readme.md)
+- [API_SmHoEzMa](/API_SmHoEzMa/readme.md)
+- [APP_SmoHoEzMa](/APP_SmHoEzMa/readme.md)
+- [NodeMCU Code](/NodeMCU_Code/readme.md)
 
 #### Docker-Compose
 Docker-Compose wird benutzt um das Managment verschiedener Container zu vereinfachen. Hier wird eine yaml Datei erzeugt,
