@@ -4,15 +4,36 @@ Dieses Programm ist im Rahmen der Lehrveranstaltung Mobile Computing 2 entstande
 wie eine grundlegendeine Microservice Struktur aufgebaut werden kann. Dafür werden unter anderen Docker, Python sowie QT
 /QML genutzt. 
 
+#### Vorraussetzungen
+In diesem Projekt werden folgende Tools genutzt: 
+
+- Python/Flask
+    - mysql-connector-python
+- QT
+    - QML 
+- Arduino
+    - C++
+    - Hardware-Sensoren
+- Hue-Emulator
+
+Der Hue Emulator ist im Verzeichnis der API-Bridge enthalten und simuliert eine Philips Hue mit diversen Lampen.
+  
+
+
 #### Start der Umgebung 
 Um das Projekt zu starten ist es notwendig, dass sowohl Docker als auch Docker-Compose installiert sind.
-Nachdem das Projekt gecloned wurde wird im Verzeichnis, welches die docker-compose.yml beinhaltet, "docker-compose up"
-ausgeführt. Empfehlung ist das "docker-compose up -d" ausgeführt wird, um diesen als Deamon zu starten und keine Konsolen 
-Logs zu erhalten.
+Damit die Microservice Struktur geladen wird, führt man `docker-compose up` im Verzeichnis aus in dem sich die 
+docker-compose.yml befindet. Oder wenn nur die Datenbank für Testzwecke hochgefahren werden soll so kann 
+`docker-compose -f docker-compose-dev.yml up` ausgeführt werden. Bitte auf korrekte Adressen achten
 
+##### Einfacher Start
+Wer nicht die Hardware bestitzt oder jedes Modul hochfahren möchte hat folgende Möglichkeiten: 
 
-Zum Beenden der Anwendung muss zuerst "Strg+c" gerdückt werden und danach "docker-compose down" in der Konsole eingegeben
- werden, um das erzeugte Docker Netzwerk und die Images zu beenden. 
+Grundsätzlich sollte immer die MySQL Datenbank gestartet werden über `docker-compose -f docker-compose-dev.yml up` 
+Danach können die einzelnen Flask APIs gestartet werden und ausgeführt werden. 
+Für die API_Bridge wird noch der Hue Emulator benötigt. Diesen einfach starten und auf auf den Button starten drücken.
+Für die NodeMCU API wird eigentlich eine NodeMCu mit dem notwendigen Aufbau, welcher in der readme der NodeMCU zu sehen
+ist, benötigt wird. 
 
 
 #### API Dokumentationen
@@ -26,32 +47,4 @@ besteht
 - [APP_SmoHoEzMa](/APP_SmHoEzMa/readme.md)
 - [NodeMCU Code](/NodeMCU_Code/readme.md)
 
-#### Docker-Compose
-Docker-Compose wird benutzt um das Managment verschiedener Container zu vereinfachen. Hier wird eine yaml Datei erzeugt,
- welche das starten der Container repräsentiert. 
-Dies ersetzt das Ausführen eines unübersichtlichen Scripts welches diverse "docker run" Befehle beinhaltet. 
-Hier erleichtert das yaml-Format das Lesen der diversen Docker Parameter welche im Hintergrund genauso in "Docker run" 
-übersetzt werden.
 
-Dies erlaubt es die einzelnen Images als Microsservices zu starten was den Vorteil hat, dass sobald Änderungen in einer
- API
-vorgenommen werden nicht alle aktualisiert werden.   
-
-Über Dockerhub wird automatisiert ein Image gebaut von welchem die Dockerfile sich auf Github befindet. Dies bedeutet 
-in der vorhandenen docker-compose.yml wird nur noch das Image gepullt und nicht auf dem ausführenden Client gebaut. 
-Dies sorgt dafür das bei der Ersteinrichtung Zeit gespart wird, besonders dann wenn Microservices auf schwacher Hardware
-ausgeführt werden soll. 
-
-#### NodeMCU 
-Da ein Teil der zu verarbeitenden Daten von einem Mikrocontroller kommen, muss dieser entsprechend aufgebaut und 
-programmiert werden.
-Die dazu notwendige Anleitung befindet sind in (Link zur NodeMCU readme). Hier wurden im Moment 2 Sensoren 
-implementiert, welche 
-die Temperatur sowie das Umgebungslicht messen. Es ist hier ein einfaches noch weitere Seonsoren anzuschließen, 
-aber wir haben uns auf 
-die grundlegenden Sensoren beschränkt welche am Anfang den meisten Sinn machen. 
-
-Hier wäre es auch sinnvoll sobald mehrere Sensoren eingesetzt werden eine PCB Zeichnung vorzunehmen und diese 
-dann Drucken zu lassen.
-Somit würden sich Größe und Kosten pro NodeMCU Konfiguration verringern und man könnte diese in einer Vielzahl 
-im Haushalt anbringen.
