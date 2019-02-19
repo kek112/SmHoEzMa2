@@ -61,6 +61,7 @@ Rectangle {
         }
     }
 
+    //Body
     //This item contains all the information of the device and is shown/hiden based on the state of the element
     Item {
         anchors.top: headerLayout.bottom
@@ -101,6 +102,7 @@ Rectangle {
         updateSize()
     }
 
+    //Example json
     /*
         [
            {
@@ -130,7 +132,7 @@ Rectangle {
         ]
       */
 
-    //NOTE: rename switch to On/Off to make meaning clearer?
+    //Functions
     function createContent() {
 
         var jsonOptionsList = ["Heat", "Light", "Switch", "Saturation", "Brightness", "Hue"]
@@ -244,7 +246,6 @@ Rectangle {
         }
     }
 
-    //TODO: replace log with sending data
     /*
 [POST]
 {
@@ -259,8 +260,12 @@ Rectangle {
   "Switch":null,
   "Brightness":null
 }
-      */
-    //functions for the ui elements when they are changed
+    */
+
+    /*
+        This function is called when one of the settings is changed
+        It creates the json and sends it to the api. The json contains all current values of the device so it doesn't matter what changed it all gets send to the api.
+    */
     function settingsChanged() {
         var contentObject = JSON.parse(contentJson)
 
@@ -273,9 +278,10 @@ Rectangle {
         jsonObject.Hue              = hueObject.value.toString()
         jsonObject.Saturation       = saturationObject.value.toString()
         jsonObject.Brightness       = brightnessObject.value.toString()
-//{"IP":"192.168.178.30","GeraeteNummer":"2","Hue":"160","Saturation":"100","Brightness":"20","Switch":"1"}
 
         console.log(JSON.stringify(jsonObject));
+
+        //send data via REST
         var xmlHttp = new XMLHttpRequest();
         var url = "http://"+apiIpAddress+":5003/api/lamp"
         xmlHttp.open("POST", url, true);
@@ -284,9 +290,9 @@ Rectangle {
         console.log(xmlHttp.statusText);
     }
 
-    //check if the device can be switch off if yes do so
+    //sleep function to shut off device if possible
     function sleep() {
-        if(switchObject != null) {
+        if(switchObject != null) {  //the existence of the switch object is used to determine if the device can be turned off
             switchObject.checked = false
         }
     }

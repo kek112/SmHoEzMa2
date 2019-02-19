@@ -4,7 +4,7 @@ import QtLocation 5.6
 import QtPositioning 5.6
 
 
-
+//Only contains the Map and a function to set a marker to the current position
 Item {
     visible: true
 
@@ -55,44 +55,4 @@ Item {
         return currentPosition;
     }
 }
-
-//    Rectangle {
-//        width: parent.width
-//        height: parent.height/2
-//        visible: true
-//        anchors.bottom: parent.bottom
-
-//        Button {
-//            text: "Position aktualisieren"
-//            anchors.top: parent.top
-//            anchors.left: parent.left
-//            anchors.topMargin: 5
-//            anchors.leftMargin: 5
-//            MouseArea {
-//                anchors.fill: parent
-//                onClicked: {
-//                    var currentPosition = positionSource.position.coordinate;
-//                    map.center = currentPosition;
-//                    marker.coordinate = currentPosition;
-//                    parent.text = 'Aktualisiert!';
-//                }
-//            }
-//        }
-
-//        Button {
-//            text: "Position speichern"
-//            anchors.top: parent.top
-//            anchors.left: parent.left
-//            anchors.topMargin: 90
-//            anchors.leftMargin: 5
-//            MouseArea {
-//                anchors.fill: parent
-//                onClicked: {
-//                    parent.text = 'Gespeichert!'
-//                }
-//            }
-//        }
-
-
-//    }
 

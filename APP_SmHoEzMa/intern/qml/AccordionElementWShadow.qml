@@ -36,7 +36,7 @@ Item {
         source: element
     }
 
-    //forwards functioncall
+    //forwards function call
 
     function sleep() {
         element.sleep()

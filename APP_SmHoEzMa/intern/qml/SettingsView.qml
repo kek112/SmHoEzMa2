@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 
+//The "SettingsView" that contains a field to enter the API IP address and the map with a button to set the current location
 Item {
     property string apiIpAddress: ""
     property var homePosition: null
@@ -15,7 +16,7 @@ Item {
            Layout.column: 0
        }
        TextField {
-           placeholderText: "___.___.___.___"
+           placeholderText: "___.___.___.___"   //IP Template
            Layout.row: 0
            Layout.column: 1
            inputMask: "000.000.000.000;_"
