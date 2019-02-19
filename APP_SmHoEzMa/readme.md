@@ -20,6 +20,8 @@ Rectangle {
     }
 }
 ```
+Der QtCreator behinhaltet zusätzlich einen Designer für QML, dies ermöglicht dem nutzer eine Oberfläche über Drag and Drop zu erstellen.
+
 Eine weitere Besonderheit ist das wenn eine property gesetzt wird aktualisiert sich die property automatisch wenn sich die angegebenen Werte verändern. Dies nennt sich property binding.
 ```QML
 Item {
@@ -28,6 +30,10 @@ Item {
 }
 ```
 QML Dateien werden zur Laufzeit vom Programm geöffnet und verarbeitet. Daher werden meist die QML Dateien selbst mit dem Programm mitgeliefert. Dies ermöglicht es die Dateien zu ändern ohne das eigentliche Programm zu verändern. Um jedoch zu verhindern das Nutzer die Dateien nicht ändern können kann das Ressourcen System von Qt verwendet um die QML Dateien direkt in die Executable zu speichern.
+
+## QtQuick
+QtQuick ist die bibliothek für QML die eine Vielzahl an bereits existierenden UI Elementen beinhaltet. Diese Elemente sind nach dem Material Standard von Google Designed.
+Die QtQuick Typen und deren Dokumentation kann unter [QtQuick Documentation](https://doc.qt.io/qt-5/qtquick-qmlmodule.html) gefunden werden
 
 ## App
 
@@ -54,3 +60,6 @@ property var settingsMenu: Menu {
         }
     }
 ```
+
+## Fazit
+Wie die meisten anderen Sprache hat auch QML Vor- und Nachteile. Wie bereits erwähnt lässt sich sehr schnell und einfach eine Oberfläche für Programme erstellen. Zusätzlich kann die Software für verschiedenste Plattformen leicht deployed werden. Im direkten Vergleich mit der C++ Bibliothek ist QML zwar besser geignet für Android Entwicklung da es weitesgehend dem Material Design entspricht jedoch hängt die Funktionalität und Menge der Elmente der C++ Bibliothek hinterher. Auch ist die Dokumentation bei weitem schlechter oder einfach noch nicht so ausgereift  wie die der C++ Bibliothek.
