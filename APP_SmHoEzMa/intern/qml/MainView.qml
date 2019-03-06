@@ -4,18 +4,16 @@ import QtQuick.Controls 2.2
 import QtQuick.Controls.Material 2.2
 import QtQuick.Layouts 1.3
 
-/*!
-    \qmltype MainView
-    \brief The root view of the app that controlls all other views.
-
-
-    The MainView displays the app header, devices and the buttons to add and remove said devices.
-    The device list is a custom made Accordion
+/*
+    MainView
+    The root view of the app that controlls all other views.
+    Contains the StackView that gets the diffrent Views from the "SlideMenu".
 */
 ApplicationWindow {
     id: mainView
     visible: true
 
+    //for testing purposes on desktop
     height: 480//960
     width: 270//540
 
@@ -28,7 +26,7 @@ ApplicationWindow {
     Material.foreground: "black"
     Material.primary: "#cde7ff"
 
-    //function that controls menu and menu button
+    //function that controls the state of the menu and menu button
     function processMenuPress() {
         if(menu.isOpen) {
             menu.closeMenu()
@@ -66,10 +64,18 @@ ApplicationWindow {
                 font.pointSize: 15
                 Layout.fillWidth: true
             }
+            //Optional settings button that only shows if the curren view has the "settingsMenu" property
+            //When this button is pressed it tries to open the "Menu" via the "settingsMenu" --> if the "settingsMenu" does not implement the open function nothing happens
             ToolButton {
                 text: "⋮"
                 font.pointSize: 27
-                onClicked: mainStack.currentItem.settingsMenu.open()
+                onClicked: {
+                    //Place the "Menu" in the top right corner and show it
+                    mainStack.currentItem.settingsMenu.x = mainView.width - mainStack.currentItem.settingsMenu.width
+                    mainStack.currentItem.settingsMenu.y = 0
+                    mainStack.currentItem.settingsMenu.open()
+                }
+                //Checks if the current view has the "settingsMenu" property. Thanks to the property bindings this automaticaly updates if the "currentItem" changes
                 visible: mainStack.currentItem.settingsMenu != null
             }
         }
@@ -85,17 +91,12 @@ ApplicationWindow {
 
 
 
-    property int animationDuration: 350
+    //The Slide Menu that contains all the other views
     SlideMenu {
 
         id: menu
-//        anchors.top: mainStack.top
-//        anchors.bottom: mainStack.bottom
-
-//        property bool menuFullyOpened: menu.x == 0 ? true : (menu.x == -(menu.width) ? false : menuFullyOpened)
 
         y: header.height
-//        height: mainView.height
         width: mainView.width*0.8
         height: mainView.height - header.height
 
@@ -113,7 +114,7 @@ ApplicationWindow {
         }
 
 
-        //pushing items on the main stack based on menu button pressed
+        //Pushing items on the main stack based on menu button pressed. This function is triggerd by a signal in "SlideMenu"
         onMenuButtonPressed: {
             mainStack.push(item)
             if(mainStack.depth <= 1) {
@@ -124,7 +125,7 @@ ApplicationWindow {
 
     }
 
-
+    //NOTE: WIP
     //handling back key press or backspace on pc
     //currently only gets handeld when app displays mainView (other views propably take focus)
     Item {

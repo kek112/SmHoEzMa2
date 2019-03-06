@@ -2,18 +2,16 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4
 
-//App Menu which contains all the menu buttons and the coresponding
+//App Menu which contains all the menu buttons and the corresponding Objects
 Drawer {
-//    Keys.forwardTo: parent
-    //    property string menuColor: "red"
     property var mainItem: mainViewButton.stackItem
     property bool isOpen: false
 
     //signal which sends the corrseponding item of the pressed button
-    //this gets handled in the MainView
+    //this gets handled in the "MainView"
     signal menuButtonPressed(var item)
 
-    //central handling of Button presses
+    //The Buttons are all added to this "ButtonGroup" for easy button handling
     ButtonGroup {
         id: viewButtonGroup
         onClicked: {
@@ -21,7 +19,9 @@ Drawer {
             closeMenu()
         }
     }
+    //Alternatively a single function could be written an set to the onClicked signal of the buttons
 
+    //These functions are needed for better handling with the Menu Button States
     function openMenu() {
         open();
         isOpen = true;
@@ -35,6 +35,9 @@ Drawer {
     ColumnLayout {
         anchors.fill: parent
         spacing: 0
+
+        //One "MenuItem" is one button in the menu
+
         MenuItem {
             id: mainViewButton
             text: "Devices"
@@ -70,6 +73,7 @@ Drawer {
             property var stackItem: InfoView {}
         }
 
+        //Filler Item to push all buttons to the top
         Item {
             Layout.fillHeight: true
             Layout.fillWidth: true

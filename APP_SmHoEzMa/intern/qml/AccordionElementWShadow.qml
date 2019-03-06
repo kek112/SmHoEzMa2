@@ -3,6 +3,7 @@ import QtGraphicalEffects 1.0
 
 //This Object is just the AccordionElement with a DropShadow
 //NOTE: the only reason this is in an extra file is for testing purposes and can theoretically be moved to the AccordionElement file (if there is enough time this should be moved)
+//NOTE: Due to a bug there was not enough time to move this
 
 Item {
     id: root
@@ -35,7 +36,7 @@ Item {
         source: element
     }
 
-    //forwards functioncall
+    //forwards function call
 
     function sleep() {
         element.sleep()
