@@ -6,6 +6,7 @@ from mysql_helper import mysql_helper
 
 app = Flask(__name__)
 ip = '192.168.178.30'
+ip = '127.0.0.1'
 port = '8000'
 
 

@@ -5,7 +5,7 @@ from mysql_helper import mysql_helper
 
 app = Flask(__name__)
 api_url = 'http://192.168.178.30:5001/update_lamp'
-api_url_lamp_update = 'http://192.168.178.30:5001/update_lamp_states'
+api_url_lamp_update = 'http://127.0.0.1:5001/update_lamp_states'
 
 @app.route("/")
 def hello():
@@ -32,11 +32,11 @@ def return_all_devices():
 @app.route('/api/device', methods=['GET', 'POST'])
 def return_one_devices():
     data = request.get_json()
-    query_specific_device = """SELECT * FROM Devices WHERE IP = '%s' AND GeraeteNummer = %s """
+    query_specific_device = """SELECT * FROM Devices WHERE IP = %s AND GeraeteNummer = %s """
     sql_data = (data['IP'], data['GeraeteNummer'])
 
     try:
-        return json.dumps(mysql_helper.send_query_to_db_no_response(query_specific_device, sql_data))
+        return json.dumps(mysql_helper.send_query_to_db(query_specific_device, sql_data))
     except IOError:
         return json.dumps({'success': False, 'Errorcode': 'Please enter valid ip'}), 400, {'ContentType': 'application/json'}
 
@@ -50,7 +50,7 @@ def return_lamps():
         query_get_lamp = """SELECT * FROM Devices WHERE GeraeteNummer != 0"""
         sql_data = ""
         try:
-            return json.dumps(mysql_helper.send_query_to_db_no_response(query_get_lamp, sql_data))
+            return json.dumps(mysql_helper.send_query_to_db(query_get_lamp, sql_data))
         except IOError:
             return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
 
@@ -94,7 +94,7 @@ def return_sensors():
     query_get_sensor = """SELECT * FROM Devices WHERE GeraeteNummer = 0 """
     sql_data = ""
     try:
-        return json.dumps(mysql_helper.send_query_to_db_no_response(query_get_sensor, sql_data))
+        return json.dumps(mysql_helper.send_query_to_db(query_get_sensor, sql_data))
     except IOError:
         return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
 

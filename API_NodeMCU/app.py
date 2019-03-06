@@ -1,5 +1,6 @@
 from flask import Flask, request
 import json
+
 from mysql_helper import mysql_helper
 
 
@@ -29,7 +30,7 @@ def set_values():
         return
 
     except:
-        return son.dumps({'success': false}), 402, {'ContentType': 'application/json'}
+        return json.dumps({'success': false}), 402, {'ContentType': 'application/json'}
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5002)

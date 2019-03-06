@@ -13,6 +13,7 @@ WORKDIR /app
 
 EXPOSE 5000
 
+COPY ./
 ADD app.py /app/
 ADD requirements.txt /app/
 

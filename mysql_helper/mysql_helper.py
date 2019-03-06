@@ -1,6 +1,5 @@
 import mysql.connector
 
-
 def send_query_to_db_no_response(query, data):
     mysql_obj = get_mysql_connection()
     cur = mysql_obj.cursor()
@@ -29,4 +28,4 @@ def get_mysql_connection():
     # martin
     #return mysql.connector.connect(user='root', host='192.168.0.2', port='3306', password='test', database='smhoezma')
     # karl
-    return mysql.connector.connect(user='root', host='192.168.178.30', port='3306', password='test', database='smhoezma', autocommit=True)
+    return mysql.connector.connect(user='user', host='127.0.0.1', port='3306', password='test', database='smhoezma', autocommit=True)
